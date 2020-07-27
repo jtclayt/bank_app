@@ -19,13 +19,14 @@
     <div id="login_form">
       <p>Please sign in with your email and password:</p>
       <form action="" method="post">
+        {% csrf_token %}
         <fieldset>
           <input type="text" name="email" id="email" placeholder="Email Address">
         </fieldset>
         <fieldset>
           <input type="text" name="password" id="password" placeholder="Password">
         </fieldset>
-        <fieldset>
+        <fieldset id="button">
           <input type="submit" value="Login">
         </fieldset>
       </form>
