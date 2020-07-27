@@ -18,6 +18,7 @@
     
     <div id="login_form">
       <form action="" method="post">
+        {% csrf_token %}
         <fieldset>
           <input type="text" name="first_name" id="first_name" placeholder="First Name">
         </fieldset>

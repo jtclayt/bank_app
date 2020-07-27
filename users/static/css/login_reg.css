@@ -42,3 +42,12 @@ body{
                 form fieldset #dob{
                     width: 150px;
                 }
+                form fieldset input[type=submit]{
+                    background-color: rgb(1, 179, 1);
+                    border: none;
+                    border-radius: 3px;
+                    color: white;
+                }
+                form fieldset input:hover[type=submit]{
+                    background-color: rgb(31, 197, 31);
+                }
