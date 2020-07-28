@@ -25,14 +25,20 @@
           <input type="text" name="email" id="email" placeholder="Email Address">
         </fieldset>
         <fieldset>
-          <input type="text" name="password" id="password" placeholder="Password">
+          <input type="password" name="password" id="password" placeholder="Password">
         </fieldset>
         <fieldset id="button">
           <input type="submit" value="Login">
         </fieldset>
       </form>
       
-      
+      {% if messages %}
+        <ul class="messages">    
+          {% for message in messages %}    
+              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
     <a href="{% url 'users:register' %}">Not a member? Create an account</a>
 
