@@ -31,7 +31,7 @@
                         <a href="" class="nav-link">Investments</a>
                     </li>
                 </ul>
-                <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
+                <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
