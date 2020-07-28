@@ -1,16 +1,21 @@
 from django.urls import path
-from .views import index, AccountsView, AccountDetail
+from .views import index, accounts_detail, AccountsView, PurchaseView, ATMView
+from .views import TransferView, BillView, ContactsView, ExternalTransferView
 
 app_name = 'app'
 
 urlpatterns = [
     path('', index, name='index'),
-    path('accounts', AccountsView.as_view(), name='accounts'),
-    path('accounts/1', views.accountDetails),
-    path('purchase', views.purchase),
-    path('transfer', views.transfer),
-    path('bill', views.bill),
-    path('external-transfer/1', views.extTransfer),
-    path('external-transfer', views.extContacts),
-    path('atm', views.atm),
+    path('accounts/', AccountsView.as_view(), name='accounts'),
+    path('accounts/<int:account_id>/', accounts_detail, name='accounts_detail'),
+    path('purchase/', PurchaseView.as_view(), name='purchase'),
+    path('transfer/', TransferView.as_view(), name='transfer'),
+    path('bill/', BillView.as_view(), name='bill'),
+    path('external-transfer/', ContactsView.as_view(), name='contacts'),
+    path(
+        'external-transfer/<int:contact_id>/',
+        ExternalTransferView.as_view(),
+        name='external_transfer'
+    ),
+    path('atm/', ATMView.as_view(), name='atm'),
 ]
