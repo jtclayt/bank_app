@@ -1,14 +1,9 @@
-/*
-  Author: Justin Clayton
-*/
-
-
 /* HTML selector rules */
 table {  
   color: #333;
   font-family: Helvetica, Arial, sans-serif;
-  border-collapse: 
-  collapse; border-spacing: 0; 
+  border-collapse: collapse; 
+  border-spacing: 0; 
   margin-bottom: 20px;
 }
 
@@ -25,19 +20,22 @@ th {
 
 td {  
   background: #FAFAFA;
-  text-align: center;
 }
 
 tr:nth-child(even) td { background: #F1F1F1; }   
 
-tr:nth-child(odd) td { background: #fffca8; }
+tr:nth-last-child(1) td { background: #fffca8; }
 
 ul {
   list-style: none;
 }
 
 li {
-  margin: 10px 0;
+  margin: 10px 0px;
+}
+
+.quick_links li {
+  margin-left: -20px;
 }
 
 h3 {
@@ -53,7 +51,7 @@ form {
   background-color: white;
   border-radius: 5px;
   margin: 20px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .footer {
@@ -67,5 +65,7 @@ form {
   margin-left: 100px;
 }
 
-/* ID rules */
-
+/* General rules */
+.container .navbar-brand img{
+  width: 250px;
+}
