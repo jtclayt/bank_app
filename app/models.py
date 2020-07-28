@@ -41,7 +41,7 @@ class TransactionType(BaseModel):
 
 
 class Transaction(BaseModel):
-    desc = models.CharField(255)
+    desc = models.CharField(max_length=255)
     amount = models.FloatField()
     new_balance = models.FloatField()
     is_deposit = models.BooleanField()
@@ -53,5 +53,6 @@ class Transaction(BaseModel):
     )
     transaction_type = models.ForeignKey(
         TransactionType,
-        related_name='transactions'
+        related_name='transactions',
+        on_delete=models.CASCADE
     )
