@@ -5,39 +5,30 @@ from re import compile as re_compile
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        '''Create and saves a new user'''
-        if not email:
-            raise ValueError('User must have an email address')
-        if not password:
-            raise ValueError('User needs a password')
-        user = self.model(email=self.normalize_email(email), **extra_fields)
-        user.set_password(password)
-        user.save()
-        return user
-
     def validate_register(self, postData):
         errors = {}
         EMAIL_REGEX = re_compile(
             r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+.[a-zA-Z]+$'
         )
-
-        # Email validation
-        if not EMAIL_REGEX.match(postData['email']):
-            errors['email'] = 'Invalid email address'
-        elif len(self.filter(email=postData['email'])) > 0:
-            errors['email'] = 'User with that email already exists'
+        # Check if email exists in DB
+        email_check = User.objects.filter(email = postData['email'])
 
         # First and last naame validations
-        if len(postData['first_name']) < 4:
-            errors['first_name'] = 'First name must be 4 or more characters'
+        if len(postData['first_name']) < 2:
+            errors['first_name'] = 'First name must be 2 or more characters'
         elif len(postData['first_name']) > 45:
             errors['first_name'] = 'First name must be 45 or less characters'
-        if len(postData['last_name']) < 4:
-            errors['last_name'] = 'Last name must be 4 or more characters'
+        if len(postData['last_name']) < 2:
+            errors['last_name'] = 'Last name must be 2 or more characters'
         elif len(postData['first_name']) > 45:
             errors['last_name'] = 'Last name must be 45 or less characters'
 
+        # Email validation
+        if len(email_check) > 0:
+            errors['email'] = "Email already in use"
+        elif not EMAIL_REGEX.match(postData['email']):
+            errors['email'] = "Invalid email address!"
+            
         # Birthdate validation
         todaysDate = datetime.now().date()
         if todaysDate < postData['birthday']:
