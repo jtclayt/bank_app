@@ -3,24 +3,72 @@
 */
 
 /* HTML selector rules */
-h1 a {
-  margin-left: 25px;
-  color: whitesmoke;
+table {  
+  color: #333;
+  font-family: Helvetica, Arial, sans-serif;
+  width: 640px; 
+  border-collapse: 
+  collapse; border-spacing: 0; 
+  margin-bottom: 20px;
 }
 
-h1 a:hover {
-  color: thistle;
-  text-decoration: none;
+td, th {  
+  border: 1px solid transparent;
+  height: 30px; 
+  text-align: center;
 }
 
-header div#status a, header div#status p {
-  font-size: 1.4rem;
-  display: inline;
-  margin-right: 10px;
+th {  
+  background: #DFDFDF;
+  font-weight: bold;
+}
+
+td {  
+  background: #FAFAFA;
+  text-align: center;
+}
+
+tr:nth-child(even) td { background: #F1F1F1; }   
+
+tr:nth-child(odd) td { background: #fffca8; }
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin: 10px 0;
+}
+
+h3 {
+  margin: 10px 0;
+}
+
+form {
+  margin: 10px 0;
 }
 
 /* Class rules */
+.container {
+  background-color: rgb(10, 23, 81);
+}
 
+.background-white {
+  background-color: white;
+  border-radius: 5px;
+  margin: 20px;
+  padding-top: 10px;
+}
 
+.footer {
+  color: white;
+  padding: 20px;
+  text-align: end;
+  margin-top: 20px;
+}
+
+.indent {
+  margin-left: 100px;
+}
 /* ID rules */
 
