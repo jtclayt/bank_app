@@ -19,3 +19,9 @@ def transfer(request):
 
 def bill(request):
     return render(request, 'bill.html')
+
+def extTransfer(request):
+    return render(request, 'ext_transfer.html')
+
+def extContacts(request):
+    return render(request, 'transfer_contacts.html')

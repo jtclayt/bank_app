@@ -7,4 +7,6 @@ urlpatterns = [
     path('purchase', views.purchase),
     path('transfer', views.transfer),
     path('bill', views.bill),
+    path('external-transfer/1', views.extTransfer),
+    path('external-transfer', views.extContacts),
 ]
