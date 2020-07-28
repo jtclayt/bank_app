@@ -19,19 +19,24 @@
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
       <a href="" class="navbar-brand">Monolith Bank</a>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="/home/" class="nav-link active">Accounts</a>
-        </li>
-        <li class="nav-item">
-          <a href="" class="nav-link">Investments</a>
-        </li>
-      </ul>
-      <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
-      <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navlinks">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a href="/home/" class="nav-link">Accounts</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link">Investments</a>
+            </li>
+          </ul>
+          <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
+          <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+      </div>
     </nav>
       <div class="row justify-content-center">
-        <div class="col-8 background-white">
+        <div class="col-lg-8 background-white">
           <table class="table">
             <tr>
               <th>Account</th>
@@ -39,12 +44,12 @@
               <th>Current Balance</th>
             </tr>
             <tr>
-              <td><a href="/accounts{{ account.id }}">123456789</a></td>
+              <td><a href="/accounts/1">123456789</a></td>
               <td>Checking</td>
               <td>$2765.39</td>
             </tr>
             <tr>
-              <td><a href="/accounts{{ account.id }}">987654321</a></td>
+              <td><a href="/accounts/1">987654321</a></td>
               <td>Savings</td>
               <td>$3307.42</td>
             </tr>
@@ -56,12 +61,12 @@
               <th>Current Balance</th>
             </tr>
             <tr>
-              <td><a href="/accounts{{ account.id }}">4567</a></td>
+              <td><a href="/accounts/1">4567</a></td>
               <td>Personal</td>
               <td>$6700.00</td>
             </tr>
             <tr>
-              <td><a href="/accounts{{ account.id }}">1234</a></td>
+              <td><a href="/accounts/1">1234</a></td>
               <td>Auto</td>
               <td>$23047.38</td>
             </tr>
@@ -73,13 +78,13 @@
               <th>Current Balance</th>
             </tr>
             <tr>
-              <td><a href="/accounts{{ account.id }}">************4321</a></td>
+              <td><a href="/accounts/1">************4321</a></td>
               <td></td>
               <td>$235.87</td>
             </tr>
           </table>
         </div>
-        <div class="col-3 background-white">
+        <div class="col-lg-3 background-white">
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/purchase">Log a Purchase</a></li>
@@ -91,7 +96,7 @@
         </div>
       </div>
       <div class="footer">
-        <p>This project created by: Justin Clay, Daniel Matthew, Dustin Crawford</p>
+        <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
       </div>
   </div>
   </body>

@@ -19,44 +19,51 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
             <a href="" class="navbar-brand">Monolith Bank</a>
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a href="/home/" class="nav-link active">Accounts</a>
-            </li>
-            <li class="nav-item">
-                <a href="" class="nav-link">Investments</a>
-            </li>
-        </ul>
-        <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
-        <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navlinks">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a href="/home/" class="nav-link">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">Investments</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
+                <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+            </div>
         </nav>
         <div class="row justify-content-center">
-            <div class="col-8 background-white">
+            <div class="col-lg-8 background-white">
                 <h5>Contacts:</h5>
                 <ul>
-                    <li><a href="/external-transfer/{{ contact.id }}">Contact 1</a></li>
-                    <li><a href="/external-transfer/{{ contact.id }}">Contact 2</a></li>
-                    <li><a href="/external-transfer/{{ contact.id }}">Contact 3</a></li>
-                    <li><a href="/external-transfer/{{ contact.id }}">Contact 4</a></li>
+                    <li><a href="/external-transfer/1">Contact 1</a></li>
+                    <li><a href="/external-transfer/1">Contact 2</a></li>
+                    <li><a href="/external-transfer/1">Contact 3</a></li>
+                    <li><a href="/external-transfer/1">Contact 4</a></li>
                 </ul>
-                <h4>Add a Contact</h4>
-                <form action="" method="POST">
-                    <div class="form-group row">
-                        <label for="first_name" class="col-3">First Name:</label>
-                        <input type="text" class="form-control col-5" name="first_name">
-                    </div>
-                    <div class="form-group row">
-                        <label for="last_name" class="col-3">Last Name:</label>
-                        <input type="text" class="form-control col-5" name="last_name">
-                    </div>
-                    <div class="form-group row">
-                        <label for="account_number" class="col-3">Account Number:</label>
-                        <input type="number" class="form-control col-5" name="account_number">
-                    </div>
-                    <button type="submit" class="btn btn-primary offset-3">Add Contact</button>
-                </form>
+                <div class="col-sm-6">
+                    <h4>Add a Contact</h4>
+                    <form action="" method="POST">
+                        <div class="form-group row">
+                            <label for="first_name" class="col-sm-3">First Name:</label>
+                            <input type="text" class="form-control col-sm-5" name="first_name">
+                        </div>
+                        <div class="form-group row">
+                            <label for="last_name" class="col-sm-3">Last Name:</label>
+                            <input type="text" class="form-control col-sm-5" name="last_name">
+                        </div>
+                        <div class="form-group row">
+                            <label for="account_number" class="col-sm-3">Account Number:</label>
+                            <input type="number" class="form-control col-sm-5" name="account_number">
+                        </div>
+                        <button type="submit" class="btn btn-primary offset-3">Add Contact</button>
+                    </form>
+                </div>
             </div>
-            <div class="col-3 background-white">
+            <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="/purchase">Log a Purchase</a></li>
@@ -68,7 +75,7 @@
             </div>
         </div>
         <div class="footer">
-            <p>This project created by: Justin Clay, Daniel Matthew, Dustin Crawford</p>
+            <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>
 </div>
 </body>

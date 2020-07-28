@@ -6,7 +6,6 @@
 table {  
   color: #333;
   font-family: Helvetica, Arial, sans-serif;
-  width: 640px; 
   border-collapse: 
   collapse; border-spacing: 0; 
   margin-bottom: 20px;
@@ -53,7 +52,7 @@ form {
   background-color: white;
   border-radius: 5px;
   margin: 20px;
-  padding-top: 10px;
+  padding: 10px;
 }
 
 .footer {
@@ -66,5 +65,6 @@ form {
 .indent {
   margin-left: 100px;
 }
+
 /* ID rules */
 
