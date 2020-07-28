@@ -1,7 +1,58 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from datetime import datetime, date, timedelta
+
+# Validations
+class TransactionManager(models.Manager):
+    errors = {}
+    # Log a purchase
+    def validate_purchase(self, postData):
+        todaysDate = datetime.now().date()
+        if postData['date'] > todaysDate:
+            errors['date'] = "Purchase must've been made today or in the past"
+
+        if len(postData['desc']) < 2:
+            errors['desc'] = "Description must be greater that 2 characters"
+        
+        if not postData['amount'] > 0:
+            errors['amount'] = "Amount must be greater than 0"
+    
+    # Make a transfer
+    def validate_transfer(self, postData):
+        if not postData['amount'] > 0:
+            errors['amount'] = "Amount must be greater than 0"
+
+    # Pay a Bill
+    def validate_bill(self, postData):  
+        if not postData['account_number'] > 0:
+            errors['account_number'] = "Account number must be greater than 0"
+        if not postData['amount'] > 0:
+            errors['amount'] = "Amount must be greater than 0"
+        todaysDate = datetime.now().date()
+        if postData['date'] > todaysDate:
+            errors['date'] = "Date must be today or a future date"
+        if len(postData['note']) < 2:
+            errors['note'] = "Note must be greater that 2 characters"
+
+    # External Transfer
+    def validate_extransfer(self, postData):
+        if not postData['account_number'] > 0:
+            errors['account_number'] = "Account number must be greater than 0"
+        if not postData['amount'] > 0:
+            errors['amount'] = "Amount must be greater than 0"
+        todaysDate = datetime.now().date()
+        if postData['date'] > todaysDate:
+            errors['date'] = "Date must be today or a future date"
+        if len(postData['note']) < 2:
+            errors['note'] = "Note must be greater that 2 characters"
+    
+    # ATM Transaction
+    def validate_atm(self, postData):
+        if not postData['amount'] > 0:
+            errors['amount'] = "Amount must be greater than 0"
 
 
+# Models
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
