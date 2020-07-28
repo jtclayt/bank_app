@@ -1,15 +1,31 @@
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from django.core.exceptions import ImproperlyConfigured
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.models import User
+from django.contrib.auth.decorators import login_required
+from users.models import Main
 
 
 def index(request):
-    return render(request, 'dashboard.html')
+    return redirect(reverse('app:accounts'))
 
-def accountDetails(request):
-    return render(request, 'account_details.html')
+
+class AccountsView(LoginRequiredMixin, Main, View):
+    login_url = '/users/login/'
+    template = 'dashboard.html'
+
+    def post(self, request):
+        '''
+        Route for posting a new account for a user.
+        '''
+        print(request.POST)
+        return redirect(reverse('app:accounts'))
+
+
+class AccountDetailView(Main, View):
+    template = 'account_details.html'
+
 
 def purchase(request):
     return render(request, 'purchase.html')
