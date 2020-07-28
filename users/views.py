@@ -28,7 +28,7 @@ class LoginView(Main, View):
     def post(self, request):
         user = authenticate(
             request,
-            username=request.POST['username'],
+            username=request.POST['email'],
             password=request.POST['password']
         )
         if user is not None:
@@ -50,10 +50,10 @@ class RegisterView(Main, View):
 
         user = get_user_model().objects.create_user(
             email=request.POST['email'],
-            password=request.POST['password1'],
+            password=request.POST['password'],
             first_name=request.POST['first_name'],
             last_name=request.POST['last_name'],
-            birthday=request.POST['birthday']
+            birthday=request.POST['dob']
         )
         login(request, user)
         return redirect('app:index')

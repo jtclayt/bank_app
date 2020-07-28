@@ -30,15 +30,16 @@ class UserManager(BaseUserManager):
             errors['email'] = "Invalid email address!"
         # Birthdate validation
         todaysDate = datetime.now().date()
-        if todaysDate < postData['birthday']:
+        dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
+        if todaysDate < dob:
             errors['birthday'] = 'Birthday must be in the past'
-        elif todaysDate - postData['birthday'] < timedelta(days=365*18):
+        elif todaysDate - dob < timedelta(days=365*18):
             errors['birthday'] = 'Must be 18 years old to create an account'
 
         # Password validations
         if len(postData['password']) < 8:
             errors['password'] = 'Password must be 8 opr more characters'
-        elif(postData['password'] != postData['password_confirm']):
+        elif(postData['password'] != postData['confirm_password']):
             errors['password'] = 'Passwords must match'
 
         return errors
