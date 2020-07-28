@@ -11,3 +11,6 @@ def index(request):
 def accountDetails(request):
     return render(request, 'account_details.html')
 
+def purchase(request):
+    return render(request, 'purchase.html')
+
