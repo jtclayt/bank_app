@@ -5,6 +5,17 @@ from re import compile as re_compile
 
 
 class UserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        '''Create and saves a new user'''
+        if not email:
+            raise ValueError('User must have an email address')
+        if not password:
+            raise ValueError('User needs a password')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
     def validate_register(self, postData):
         errors = {}
         EMAIL_REGEX = re_compile(
