@@ -16,3 +16,6 @@ def purchase(request):
 
 def transfer(request):
     return render(request, 'transfer.html')
+
+def bill(request):
+    return render(request, 'bill.html')

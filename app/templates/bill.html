@@ -46,16 +46,20 @@
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="recipient_name" class="col-4">From:</label>
-                            <select name="recipient_name" class="custom-select col-8">
-                                <option selected>-Choose an Account-</option>
-                                <option value="">Checking</option>
-                                <option value="">Savings</option>
-                            </select>
+                            <label for="bill_id" class="col-4">To:</label>
+                            <input type="number" class="col-8" name="bill_id" placeholder="Account #">
                         </div>
                         <div class="form-group row">
                             <label for="amount" class="col-4">Amount:</label>
                             <input type="number" class="form-control col-8" name="amount">
+                        </div>
+                        <div class="form-group row">
+                            <label for="date" class="col-4"></label>
+                            <input type="date" class="form-control col-8" name="date">
+                        </div>
+                        <div class="form-group row">
+                            <label for="desc" class="col-4">Note:</label>
+                            <input type="text" class="form-control col-8" name="desc">
                         </div>
                         <button type="submit" class="btn btn-primary offset-4">Submit</button>
                     </form>
