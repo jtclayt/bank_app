@@ -14,3 +14,5 @@ def accountDetails(request):
 def purchase(request):
     return render(request, 'purchase.html')
 
+def transfer(request):
+    return render(request, 'transfer.html')
