@@ -19,49 +19,54 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
             <a href="" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a href="/home/" class="nav-link active">Accounts</a>
-            </li>
-            <li class="nav-item">
-                <a href="" class="nav-link">Investments</a>
-            </li>
-        </ul>
-        <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
-        <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navlinks">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a href="/home/" class="nav-link">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">Investments</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
+                <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+            </div>
         </nav>
         <div class="row justify-content-center">
-            <div class="col-8 background-white">
+            <div class="col-lg-8 background-white">
                 <div class="col-4 offset-8">
                     <p><strong>Current Balance: </strong>$0.00</p>
                 </div>
-                <div class="col-6">
-                    <form action="">
+                <div class="col-sm-6">
+                    <form action="" method="POST">
                         <div class="form-group row">
-                            <label for="account_name" class="col-4">From:</label>
-                            <select name="account_name" class="custom-select col-8">
+                            <label for="account_name" class="col-sm-4">From:</label>
+                            <select name="account_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
                                 <option value="">Checking</option>
                                 <option value="">Savings</option>
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="recipient_name" class="col-4">From:</label>
-                            <select name="recipient_name" class="custom-select col-8">
+                            <label for="recipient_name" class="col-sm-4">From:</label>
+                            <select name="recipient_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
                                 <option value="">Checking</option>
                                 <option value="">Savings</option>
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="amount" class="col-4">Amount:</label>
-                            <input type="number" class="form-control col-8" name="amount">
+                            <label for="amount" class="col-sm-4">Amount:</label>
+                            <input type="number" class="form-control col-sm-8" name="amount">
                         </div>
                         <button type="submit" class="btn btn-primary offset-4">Submit</button>
                     </form>
                 </div>
             </div>
-            <div class="col-3 background-white">
+            <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="/purchase">Log a Purchase</a></li>
@@ -73,7 +78,7 @@
             </div>
         </div>
         <div class="footer">
-            <p>This project created by: Justin Clay, Daniel Matthew, Dustin Crawford</p>
+            <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>
 </div>
 </body>

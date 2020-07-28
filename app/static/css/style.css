@@ -7,7 +7,6 @@
 table {  
   color: #333;
   font-family: Helvetica, Arial, sans-serif;
-  width: 640px; 
   border-collapse: 
   collapse; border-spacing: 0; 
   margin-bottom: 20px;
@@ -50,19 +49,11 @@ form {
 }
 
 /* Class rules */
-/* .container {
-  background-color: rgb(10, 23, 81);
-} */
-
-  .container .navbar-brand img{
-    width: 200px;
-  }
-
 .background-white {
   background-color: white;
   border-radius: 5px;
   margin: 20px;
-  padding-top: 10px;
+  padding: 10px;
 }
 
 .footer {
@@ -75,5 +66,6 @@ form {
 .indent {
   margin-left: 100px;
 }
+
 /* ID rules */
 
