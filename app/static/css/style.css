@@ -52,6 +52,7 @@ h3 {
 .background-white {
   background-color: white;
   border-radius: 5px;
+  margin: 20px;
 }
 
 .footer {
@@ -61,5 +62,8 @@ h3 {
   margin-top: 20px;
 }
 
+.indent {
+  margin-left: 100px;
+}
 /* ID rules */
 

@@ -8,5 +8,6 @@ from users.models import User
 def index(request):
     return render(request, 'dashboard.html')
 
-
+def accountDetails(request):
+    return render(request, 'account_details.html')
 
