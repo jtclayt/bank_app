@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
+            <a href="" class="navbar-brand">Monolith Bank</a>
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a href="/home/" class="nav-link active">Accounts</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link">Investments</a>
+            </li>
+        </ul>
+        <span class="navbar-text">Welcome {{ request.user.first_name }}</span>
+        <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+        </nav>
+        <div class="row justify-content-center">
+            <div class="col-8 background-white">
+                <div class="col-4 offset-8">
+                    <p><strong>Current Balance: </strong>$0.00</p>
+                </div>
+                <div class="col-6">
+                    <form action="">
+                        <div class="form-group row">
+                            <label for="account_name" class="col-4">From:</label>
+                            <select name="account_name" class="custom-select col-8">
+                                <option selected>-Choose an Account-</option>
+                                <option value="">Checking</option>
+                                <option value="">Savings</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label for="account_name" class="col-4">To:</label>
+                            <input type="number" class="col-8" name="account_name" placeholder="Account #">
+                        </div>
+                        <div class="form-group row">
+                            <label for="amount" class="col-4">Amount:</label>
+                            <input type="number" class="form-control col-8" name="amount">
+                        </div>
+                        <div class="form-group row">
+                            <label for="date" class="col-4"></label>
+                            <input type="date" class="form-control col-8" name="date">
+                        </div>
+                        <div class="form-group row">
+                            <label for="desc" class="col-4">Note:</label>
+                            <input type="text" class="form-control col-8" name="desc">
+                        </div>
+                        <button type="submit" class="btn btn-primary offset-4">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-3 background-white">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/purchase">Log a Purchase</a></li>
+                    <li><a href="/transfer">Make a Transfer</a></li>
+                    <li><a href="/bill">Pay a Bill</a></li>
+                    <li></li><a href="/external-transfer">External Transfer</a></li>
+                    <li><a href="/atm">ATM Transaction</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <p>This project created by: Justin Clay, Daniel Matthew, Dustin Crawford</p>
+        </div>
+</div>
+</body>
+</html>

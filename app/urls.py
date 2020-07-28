@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import index, HomeView
-
-app_name = 'app'
+from . import views
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('home/', HomeView.as_view(), name='home')
+    path('home/', views.index),
+    path('accounts/1', views.accountDetails),
+    path('purchase', views.purchase),
+    path('transfer', views.transfer),
+    path('bill', views.bill),
+    path('external-transfer/1', views.extTransfer),
+    path('external-transfer', views.extContacts),
 ]

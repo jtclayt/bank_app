@@ -2,27 +2,26 @@ from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth.mixins import LoginRequiredMixin
+from users.models import User
 
 
 def index(request):
-    return redirect(reverse('app:home'))
+    return render(request, 'dashboard.html')
 
+def accountDetails(request):
+    return render(request, 'account_details.html')
 
-class Main(object):
-    template = None
+def purchase(request):
+    return render(request, 'purchase.html')
 
-    def get_template(self):
-        if self.template is not None:
-            return self.template
-        raise ImproperlyConfigured('Template not defined.')
+def transfer(request):
+    return render(request, 'transfer.html')
 
+def bill(request):
+    return render(request, 'bill.html')
 
-class HomeView(LoginRequiredMixin, Main, View):
-    login_url = '/users/login/'
-    template = 'index.html'
+def extTransfer(request):
+    return render(request, 'ext_transfer.html')
 
-    def get(self, request):
-        return render(request, self.get_template())
-
-    def post(self, request):
-        return redirect(reverse('app:home'))
+def extContacts(request):
+    return render(request, 'transfer_contacts.html')
