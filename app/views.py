@@ -13,10 +13,10 @@ def index(request):
 
 
 @login_required()
-def accounts_detail(request, account_id):
+def account_detail(request, account_id):
     context = {
         'user': request.user,
-        'account': get_object_or_404(Account, id=account_id)
+        # 'account': get_object_or_404(Account, id=account_id)
     }
     return render(request,  'account_details.html', context)
 
