@@ -9,4 +9,5 @@ urlpatterns = [
     path('bill', views.bill),
     path('external-transfer/1', views.extTransfer),
     path('external-transfer', views.extContacts),
+    path('atm', views.atm),
 ]

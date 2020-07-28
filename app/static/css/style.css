@@ -49,10 +49,6 @@ form {
 }
 
 /* Class rules */
-.container {
-  background-color: rgb(10, 23, 81);
-}
-
 .background-white {
   background-color: white;
   border-radius: 5px;

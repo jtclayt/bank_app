@@ -25,3 +25,6 @@ def extTransfer(request):
 
 def extContacts(request):
     return render(request, 'transfer_contacts.html')
+
+def atm(request):
+    return render(request, 'atm.html')
