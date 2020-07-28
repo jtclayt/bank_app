@@ -1,6 +1,9 @@
 /* body * {
     border: 1px dotted red;
 } */
+body{
+    background-color: rgb(10, 23, 41);
+}
 #container{
     position: fixed;
     top: 50%;

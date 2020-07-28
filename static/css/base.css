@@ -16,6 +16,10 @@ header {
   align-items: center;
 }
 
+body {
+  background-color: rgb(10, 23, 41);
+}
+
 header h1 {
   margin: 10px 0;
   font-size: 2.2rem;

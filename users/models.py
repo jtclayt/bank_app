@@ -11,9 +11,9 @@ class UserManager(BaseUserManager):
             r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+.[a-zA-Z]+$'
         )
         # Check if email exists in DB
-        email_check = User.objects.filter(email = postData['email'])
+        email_check = self.filter(email=postData['email'])
 
-        # First and last naame validations
+        # First and last name validations
         if len(postData['first_name']) < 2:
             errors['first_name'] = 'First name must be 2 or more characters'
         elif len(postData['first_name']) > 45:
@@ -28,7 +28,6 @@ class UserManager(BaseUserManager):
             errors['email'] = "Email already in use"
         elif not EMAIL_REGEX.match(postData['email']):
             errors['email'] = "Invalid email address!"
-            
         # Birthdate validation
         todaysDate = datetime.now().date()
         if todaysDate < postData['birthday']:

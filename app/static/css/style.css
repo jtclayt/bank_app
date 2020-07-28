@@ -2,6 +2,7 @@
   Author: Justin Clayton
 */
 
+
 /* HTML selector rules */
 table {  
   color: #333;
@@ -48,6 +49,17 @@ form {
 }
 
 /* Class rules */
+<<<<<<< HEAD
+=======
+/* .container {
+  background-color: rgb(10, 23, 81);
+} */
+
+  .container .navbar-brand img{
+    width: 200px;
+  }
+
+>>>>>>> master
 .background-white {
   background-color: white;
   border-radius: 5px;
