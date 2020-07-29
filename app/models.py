@@ -75,6 +75,9 @@ class AccountType(BaseModel):
     name = models.CharField(max_length=100)
     interest_rate = models.FloatField()
 
+    def __str__(self):
+        return self.name
+
 
 class Account(BaseModel):
     account_number = models.CharField(max_length=16)
@@ -98,6 +101,9 @@ class Account(BaseModel):
 class TransactionType(BaseModel):
     name = models.CharField(max_length=100)
     fee_amount = models.FloatField()
+
+    def __str__(self):
+        return self.name
 
 
 class Transaction(BaseModel):

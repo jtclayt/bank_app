@@ -1,0 +1,72 @@
+[
+{
+  "model": "app.accounttype",
+  "pk": 1,
+  "fields": {
+    "created_at": "2020-07-29T17:28:20.839Z",
+    "updated_at": "2020-07-29T17:28:20.839Z",
+    "name": "Checking",
+    "interest_rate": 0.005
+  }
+},
+{
+  "model": "app.accounttype",
+  "pk": 2,
+  "fields": {
+    "created_at": "2020-07-29T17:28:56.147Z",
+    "updated_at": "2020-07-29T17:28:56.147Z",
+    "name": "Savings",
+    "interest_rate": 0.015
+  }
+},
+{
+  "model": "app.accounttype",
+  "pk": 3,
+  "fields": {
+    "created_at": "2020-07-29T17:30:11.879Z",
+    "updated_at": "2020-07-29T17:30:11.879Z",
+    "name": "Credit",
+    "interest_rate": 0.15
+  }
+},
+{
+  "model": "app.accounttype",
+  "pk": 4,
+  "fields": {
+    "created_at": "2020-07-29T17:30:27.941Z",
+    "updated_at": "2020-07-29T17:30:27.941Z",
+    "name": "Retirement",
+    "interest_rate": 0.07
+  }
+},
+{
+  "model": "app.transactiontype",
+  "pk": 1,
+  "fields": {
+    "created_at": "2020-07-29T17:32:56.413Z",
+    "updated_at": "2020-07-29T17:32:56.413Z",
+    "name": "Transfer",
+    "fee_amount": 0.0
+  }
+},
+{
+  "model": "app.transactiontype",
+  "pk": 2,
+  "fields": {
+    "created_at": "2020-07-29T17:33:07.106Z",
+    "updated_at": "2020-07-29T17:33:07.106Z",
+    "name": "Purchase",
+    "fee_amount": 0.0
+  }
+},
+{
+  "model": "app.transactiontype",
+  "pk": 3,
+  "fields": {
+    "created_at": "2020-07-29T17:33:16.941Z",
+    "updated_at": "2020-07-29T17:33:56.794Z",
+    "name": "ATM",
+    "fee_amount": 3.0
+  }
+}
+]
