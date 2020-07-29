@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as logout_user
 from django.contrib.auth import get_user_model
 
+from app.models import Account, AccountType
+
 
 def index(request):
     return redirect(reverse('users:login'))
@@ -54,6 +56,10 @@ class RegisterView(Main, View):
             first_name=request.POST['first_name'],
             last_name=request.POST['last_name'],
             birthday=request.POST['dob']
+        )
+        Account.objects.create_account(
+            owner=user,
+            account_type=AccountType.objects.get(id=2)
         )
         login(request, user)
         return redirect('app:index')

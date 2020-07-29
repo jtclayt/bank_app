@@ -3,7 +3,34 @@ from django.contrib.auth import get_user_model
 from datetime import datetime
 
 
-# Validations
+class AccountManager(models.Manager):
+    def validate_account(self, postData):
+        errors = {}
+        if len(Account.objects.filter(id=postData['account_type'])) == 0:
+            errors['account_type'] = 'Select a valid account type'
+        if postData['balance'] < 0:
+            errors['balance'] = 'Balance must be greater than 0'
+        return errors
+
+    def create_account(self, owner, account_type, balance=5):
+        if not owner:
+            raise ValueError('Account must have an owner')
+        if not account_type:
+            raise ValueError('Account must have a type')
+
+        account = self.create(
+            balance=balance,
+            owner=owner,
+            account_type=account_type
+        )
+        account.account_number = str(self.get_account_number(account.id))
+        account.save()
+        return account
+
+    def get_account_number(self, id):
+        return 7840000 + id
+
+
 class TransactionManager(models.Manager):
     # Log a purchase
     def validate_purchase(self, postData):
@@ -80,7 +107,7 @@ class AccountType(BaseModel):
 
 
 class Account(BaseModel):
-    account_number = models.CharField(max_length=16)
+    account_number = models.CharField(max_length=8, default='')
     balance = models.FloatField()
     owner = models.ForeignKey(
         get_user_model(),
@@ -96,6 +123,7 @@ class Account(BaseModel):
         "self",
         related_name='linked_accounts'
     )
+    objects = AccountManager()
 
 
 class TransactionType(BaseModel):
