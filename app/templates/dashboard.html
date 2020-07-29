@@ -25,7 +25,7 @@
       <div class="collapse navbar-collapse" id="navlinks">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a href="/" class="nav-link">Accounts</a>
+              <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
             </li>
             <li class="nav-item">
               <a href="" class="nav-link">Investments</a>
@@ -44,21 +44,15 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            <tr>
-              <td><a href="/accounts/1">123456789</a></td>
-              <td>Checking</td>
-              <td>$2765.39</td>
-            </tr>
-            <tr>
-              <td><a href="/accounts/1">987654321</a></td>
-              <td>Savings</td>
-              <td>$3307.42</td>
-            </tr>
-            <tr>
-              <td><strong>Totals</strong></td>
-              <td></td>
-              <td><strong>$10,000.50</strong></td>
-            </tr>
+            {% for account in request.accounts.all %}
+              {% if account.owner.id == request.user.id and account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
+                <tr>
+                  <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
+                  <td>{{account.account_type.name}}</td>
+                  <td>${{account.balance}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
           </table>
 
           <table class="table">
@@ -68,16 +62,15 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            <tr>
-              <td><a href="/accounts/1">4567</a></td>
-              <td>Personal</td>
-              <td>$6700.00</td>
-            </tr>
-            <tr>
-              <td><a href="/accounts/1">1234</a></td>
-              <td>Auto</td>
-              <td>$23047.38</td>
-            </tr>
+            {% for account in request.accounts.all %}
+              {% if account.owner.id == request.user.id and account.account_type.name == "Loan" %}
+                <tr>
+                  <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
+                  <td>{{account.account_type.name}}</td>
+                  <td>{{account.balance}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
             <tr>
               <td><strong>Totals</strong></td>
               <td></td>
@@ -92,11 +85,15 @@
               <th></th>
               <th>Current Balance</th>
             </tr>
-            <tr>
-              <td><a href="/accounts/1">************4321</a></td>
-              <td></td>
-              <td>$235.87</td>
-            </tr>
+            {% for account in request.accounts.all %}
+              {% if account.owner.id == request.user.id and account.account_type.name == "Credit" %}
+                <tr>
+                  <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
+                  <td></td>
+                  <td>${{account.balance}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
             <tr class="total">
               <td><strong>Totals</strong></td>
               <td></td>
@@ -107,11 +104,11 @@
         <div class="col-lg-3 background-white">
           <h3>Quick Links</h3>
           <ul class="quick_links">
-            <li><a href="/purchase">&#187; Log a Purchase</a></li>
-            <li><a href="/transfer">&#187; Make a Transfer</a></li>
-            <li><a href="/bill">&#187; Pay a Bill</a></li>
-            <li><a href="/external-transfer">&#187; External Transfer</a></li>
-            <li><a href="/atm">&#187; ATM Transaction</a></li>
+            <li><a href="{% url 'app:purchase' %}">&#187; Log a Purchase</a></li>
+            <li><a href="{% url 'app:transfer' %}">&#187; Make a Transfer</a></li>
+            <li><a href="{% url 'app:bill' %}">&#187; Pay a Bill</a></li>
+            <li><a href="{% url 'app:contacts' %}">&#187; External Transfer</a></li>
+            <li><a href="{% url 'app:atm' %}">&#187; ATM Transaction</a></li>
           </ul>
         </div>
       </div>

@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navlinks">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a href="/" class="nav-link">Accounts</a>
+                        <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Investments</a>
@@ -46,18 +46,19 @@
                 </ul>
                 <div class="col-sm-6">
                     <h4>Add a Contact</h4>
-                    <form action="" method="POST">
+                    <form action="{% url 'app:contacts' %}" method="POST">
+                        {% csrf_token %}
                         <div class="form-group row">
-                            <label for="first_name" class="col-sm-3">First Name:</label>
-                            <input type="text" class="form-control col-sm-5" name="first_name">
+                            <label for="first_name" class="col-sm-4">First Name:</label>
+                            <input type="text" class="form-control col-sm-8" name="first_name">
                         </div>
                         <div class="form-group row">
-                            <label for="last_name" class="col-sm-3">Last Name:</label>
-                            <input type="text" class="form-control col-sm-5" name="last_name">
+                            <label for="last_name" class="col-sm-4">Last Name:</label>
+                            <input type="text" class="form-control col-sm-8" name="last_name">
                         </div>
                         <div class="form-group row">
-                            <label for="account_number" class="col-sm-3">Account Number:</label>
-                            <input type="number" class="form-control col-sm-5" name="account_number">
+                            <label for="account_number" class="col-sm-4">Account Number:</label>
+                            <input type="number" class="form-control col-sm-8" name="account_number">
                         </div>
                         <button type="submit" class="btn btn-primary offset-3">Add Contact</button>
                     </form>

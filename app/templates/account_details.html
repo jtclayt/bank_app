@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navlinks">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a href="/" class="nav-link">Accounts</a>
+                        <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Investments</a>
@@ -38,14 +38,14 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
                 <div class="row justify-content-around">
-                    <p><strong>Account #: </strong>000000000</p>
-                    <p><strong>Current Balance: </strong>$0.00</p>
+                    <p><strong>Account #: </strong>{{request.account.account_number}}</p>
+                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>Account Type: </strong>Checking</p>
+                    <p class="indent"><strong>Account Type: </strong>{{request.account.account_type.name}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>APY: </strong>1.5%</p>
+                    <p class="indent"><strong>APY: </strong>{{request.account.account_type.interest_rate}}%</p>
                 </div>
                 <div class="row justify-content-center">
                     <table class="table">
@@ -55,36 +55,28 @@
                             <th>Amount</th>
                             <th>Balance</th>
                         </tr>
-                        <tr>
-                            <td>7/25/2020</td>
-                            <td>Chipotle</td>
-                            <td>$36.57</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>7/22/2020</td>
-                            <td>Bill Pay</td>
-                            <td>$250.00</td>
-                            <td>$0.00</td>
-                        </tr>
-                        <tr>
-                            <td>7/16/2020</td>
-                            <td>Deposit</td>
-                            <td>$1000.00</td>
-                            <td>$0.00</td>
-                        </tr>
+                        {% for transaction in request.transactions.all %}
+                            {% if transaction.account.id == request.account.id %}
+                                <tr>
+                                    <td>{{transaction.process_date}}</td>
+                                    <td>{{transaction.desc}}</td>
+                                    <td>${{transaction.amount}}</td>
+                                    <td>${{transaction.new_balance}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                     </table>
                 </div>
             </div>
             <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul class="quick_links">
-                    <li><a href="/purchase">&#187; Log a Purchase</a></li>
-                    <li><a href="/transfer">&#187; Make a Transfer</a></li>
-                    <li><a href="/bill">&#187; Pay a Bill</a></li>
-                    <li><a href="/external-transfer">&#187; External Transfer</a></li>
-                    <li><a href="/atm">&#187; ATM Transaction</a></li>
-                  </ul>
+                    <li><a href="{% url 'app:purchase' %}">&#187; Log a Purchase</a></li>
+                    <li><a href="{% url 'app:transfer' %}">&#187; Make a Transfer</a></li>
+                    <li><a href="{% url 'app:bill' %}">&#187; Pay a Bill</a></li>
+                    <li><a href="{% url 'app:contacts' %}">&#187; External Transfer</a></li>
+                    <li><a href="{% url 'app:atm' %}">&#187; ATM Transaction</a></li>
+                </ul>
             </div>
         </div>
         <div class="footer">
