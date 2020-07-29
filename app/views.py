@@ -100,8 +100,6 @@ class ATMView(LoginRequiredMixin, Main, View):
         print(request.POST)
         return redirect(reverse('app:atm'))
 
-def edit_profile(request):
-    return render(request, 'edit_profile.html')
 
 def create_account(request):
     return render(request, 'create_account.html')

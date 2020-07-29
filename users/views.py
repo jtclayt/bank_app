@@ -4,6 +4,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as logout_user
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from app.models import Account, AccountType
 
@@ -63,6 +64,14 @@ class RegisterView(Main, View):
         )
         login(request, user)
         return redirect('app:index')
+
+
+class EditUserView(LoginRequiredMixin, Main, View):
+    template = 'edit_profile.html'
+
+    def post(self, request):
+        print(request.POST)
+        return redirect(reverse('users:edit'))
 
 
 def logout(request):
