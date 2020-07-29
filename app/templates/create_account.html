@@ -24,13 +24,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navlinks">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Investments</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a href="/create_account" class="nav-link">Create an Account</a>
                     </li>
                 </ul>
@@ -38,43 +38,33 @@
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
+
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
-                <div class="col-4 offset-8">
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
+                <div class="col-8">
+                    <h3>Create New Account</h3>
                 </div>
                 <div class="col-sm-6">
-                    <form action="{% url 'app:external_transfer' %}" method="POST">
+                    <form action="/create_account" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account_name" class="col-sm-4">From:</label>
+                            <label for="account_name" class="col-sm-4">Account Type:</label>
                             <select name="account_name" class="custom-select col-sm-8">
-                                <option selected>-Choose an Account-</option>
-                                {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}}</option>
+                                <option selected>-Choose a Type-</option>
+                                {% for account_type in request.account_types.all %}
+                                    <option>{{account_type.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="account_name" class="col-sm-4">To:</label>
-                            <input type="number" class="col-sm-8" name="account_name" placeholder="Account #">
+                            <label for="balance" class="col-sm-4">Start Balance:</label>
+                            <input type="number" class="form-control col-sm-8" value="0.00">
                         </div>
-                        <div class="form-group row">
-                            <label for="amount" class="col-sm-4">Amount:</label>
-                            <input type="number" class="form-control col-sm-8" name="amount">
-                        </div>
-                        <div class="form-group row">
-                            <label for="date" class="col-sm-4"></label>
-                            <input type="date" class="form-control col-sm-8" name="date">
-                        </div>
-                        <div class="form-group row">
-                            <label for="desc" class="col-sm-4">Note:</label>
-                            <input type="text" class="form-control col-sm-8" name="desc">
-                        </div>
-                        <button type="submit" class="btn btn-primary offset-4">Submit</button>
+                        <button type="submit" class="btn btn-primary offset-4">Create</button>
                     </form>
                 </div>
             </div>
+
             <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul class="quick_links">
@@ -86,6 +76,7 @@
                 </ul>
             </div>
         </div>
+        
         <div class="footer">
             <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>
