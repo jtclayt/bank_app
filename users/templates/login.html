@@ -19,7 +19,7 @@
     
     <div id="login_form">
       <p>Please sign in with your email and password:</p>
-      <form action="" method="post">
+      <form action="{% url 'users:login' %}" method="post">
         {% csrf_token %}
         <fieldset>
           <input type="text" name="email" id="email" placeholder="Email Address">
