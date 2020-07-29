@@ -49,8 +49,8 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
+            {% for account in request.user.accounts.all %}
+              {% if account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td>{{account.account_type.name}}</td>
@@ -67,8 +67,8 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Loan" %}
+            {% for account in request.user.accounts.all %}
+              {% if account.account_type.name == "Loan" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td>{{account.account_type.name}}</td>
@@ -91,7 +91,7 @@
               <th>Current Balance</th>
             </tr>
             {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Credit" %}
+              {% if account.account_type.name == "Credit" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td></td>
