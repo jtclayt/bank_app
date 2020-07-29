@@ -65,6 +65,11 @@ form {
   margin-left: 100px;
 }
 
+.btn-primary {
+  background-color: rgb(31, 197, 31);
+  border: 1px solid rgb(31, 197, 31);
+}
+
 /* General rules */
 .container .navbar-brand img{
   width: 250px;
