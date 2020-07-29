@@ -19,5 +19,6 @@ urlpatterns = [
         name='external_transfer'
     ),
     path('atm/', ATMView.as_view(), name='atm'),
-    path('edit_profile/', views.edit_profile)
+    path('edit_profile/', views.edit_profile),
+    path('create_account', views.create_account),
 ]

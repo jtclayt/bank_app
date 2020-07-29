@@ -30,6 +30,9 @@
                     <li class="nav-item">
                         <a href="" class="nav-link">Investments</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/create_account" class="nav-link">Create an Account</a>
+                    </li>
                 </ul>
                 <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
@@ -39,10 +42,9 @@
             <div class="col-lg-8 background-white">
                 <h5>Contacts:</h5>
                 <ul>
-                    <li><a href="/external-transfer/1">Contact 1</a></li>
-                    <li><a href="/external-transfer/1">Contact 2</a></li>
-                    <li><a href="/external-transfer/1">Contact 3</a></li>
-                    <li><a href="/external-transfer/1">Contact 4</a></li>
+                    {% for linked_account in request.user.linked_accounts.all %}
+                        <li><a href="{% url 'app:external-transfer' account.id">{{linked_account.first_name}} {{linked_account.last_name}}</a></li>
+                    {% endfor %}
                 </ul>
                 <div class="col-sm-6">
                     <h4>Add a Contact</h4>

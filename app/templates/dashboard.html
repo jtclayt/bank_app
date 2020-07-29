@@ -15,6 +15,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="{% static 'js/index.js' %}"></script>
 </head>
+
 <body>
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
@@ -30,11 +31,15 @@
             <li class="nav-item">
               <a href="" class="nav-link">Investments</a>
             </li>
+            <li class="nav-item">
+              <a href="/create_account" class="nav-link">Create an Account</a>
+            </li>
           </ul>
           <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
           <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
       </div>
     </nav>
+
       <div class="row justify-content-center">
         <div class="col-lg-8 background-white">
           <table class="table">
@@ -101,6 +106,7 @@
             </tr>
           </table>
         </div>
+
         <div class="col-lg-3 background-white">
           <h3>Quick Links</h3>
           <ul class="quick_links">
@@ -112,6 +118,7 @@
           </ul>
         </div>
       </div>
+
       <div class="footer">
         <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
       </div>

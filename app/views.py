@@ -102,3 +102,6 @@ class ATMView(LoginRequiredMixin, Main, View):
 
 def edit_profile(request):
     return render(request, 'edit_profile.html')
+
+def create_account(request):
+    return render(request, 'create_account.html')
