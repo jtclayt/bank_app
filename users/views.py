@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as logout_user
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from app.models import Account, AccountType
 
@@ -70,8 +71,41 @@ class EditUserView(LoginRequiredMixin, Main, View):
     template = 'edit_profile.html'
 
     def post(self, request):
-        print(request.POST)
+        errors = get_user_model().objects.validate_user_info(
+            request.POST,
+            request.user
+        )
+        print(errors)
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+        else:
+            request.user.first_name = request.POST['first_name']
+            request.user.last_name = request.POST['last_name']
+            request.user.email = request.POST['email']
+            request.user.save()
+            messages.success(request, 'Account info updated!')
         return redirect(reverse('users:edit'))
+
+
+@login_required()
+def change_password(request):
+    if request.method == 'POST':
+        errors = {}
+        if not request.user.check_password(request.POST['old_password']):
+            errors['old_password'] = 'Password is incorrect'
+        get_user_model().objects.validate_password(request.POST, errors)
+
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+        else:
+            request.user.set_password(request.POST['password'])
+            request.user.save()
+            login(request, request.user)
+            messages.success(request, 'Password changed!')
+
+    return redirect(reverse('users:edit'))
 
 
 def logout(request):
