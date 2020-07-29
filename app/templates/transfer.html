@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navlinks">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a href="/" class="nav-link">Accounts</a>
+                        <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Investments</a>
@@ -38,24 +38,27 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
                 <div class="col-4 offset-8">
-                    <p><strong>Current Balance: </strong>$0.00</p>
+                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
                 </div>
                 <div class="col-sm-6">
-                    <form action="" method="POST">
+                    <form action="{% url 'app:transfer' %}" method="POST">
+                        {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">From:</label>
                             <select name="account_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
-                                <option value="">Checking</option>
-                                <option value="">Savings</option>
+                                {% for account in request.user.accounts.all %}
+                                    <option>{{account.account_type.name}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
                             <label for="recipient_name" class="col-sm-4">From:</label>
                             <select name="recipient_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
-                                <option value="">Checking</option>
-                                <option value="">Savings</option>
+                                {% for account in request.user.linked_accounts.all %}
+                                    <option>{{account.account_type.name}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
@@ -69,11 +72,11 @@
             <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul class="quick_links">
-                    <li><a href="/purchase">&#187; Log a Purchase</a></li>
-                    <li><a href="/transfer">&#187; Make a Transfer</a></li>
-                    <li><a href="/bill">&#187; Pay a Bill</a></li>
-                    <li><a href="/external-transfer">&#187; External Transfer</a></li>
-                    <li><a href="/atm">&#187; ATM Transaction</a></li>
+                    <li><a href="{% url 'app:purchase' %}">&#187; Log a Purchase</a></li>
+                    <li><a href="{% url 'app:transfer' %}">&#187; Make a Transfer</a></li>
+                    <li><a href="{% url 'app:bill' %}">&#187; Pay a Bill</a></li>
+                    <li><a href="{% url 'app:contacts' %}">&#187; External Transfer</a></li>
+                    <li><a href="{% url 'app:atm' %}">&#187; ATM Transaction</a></li>
                 </ul>
             </div>
         </div>
