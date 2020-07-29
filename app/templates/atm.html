@@ -38,6 +38,7 @@
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
+
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
                 <div class="col-sm-6">
@@ -45,7 +46,7 @@
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">From:</label>
-                            <select name="account_name" class="custom-select col-sm-5">
+                            <select name="account_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
                                     <option>{{account.account_type.name}}</option>
@@ -75,6 +76,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul class="quick_links">
@@ -86,6 +88,7 @@
                 </ul>
             </div>
         </div>
+
         <div class="footer">
             <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>
