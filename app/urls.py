@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import index, account_detail, AccountsView, PurchaseView, ATMView
 from .views import TransferView, BillView, ContactsView, ExternalTransferView
+from . import views
 
 app_name = 'app'
 
@@ -18,4 +19,5 @@ urlpatterns = [
         name='external_transfer'
     ),
     path('atm/', ATMView.as_view(), name='atm'),
+    path('edit_profile/', views.edit_profile)
 ]

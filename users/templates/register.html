@@ -18,7 +18,7 @@
     <img src="{% static 'users/img/logo.png' %}" alt="">
     
     <div id="login_form">
-      <form action="" method="post">
+      <form action="{% url 'users:register' %}" method="post">
         {% csrf_token %}
         <fieldset>
           <input type="text" name="first_name" id="first_name" placeholder="First Name">
