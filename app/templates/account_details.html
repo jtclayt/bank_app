@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
+    {% load mathfilters %}
 </head>
 <body>
     <div class="container">
@@ -50,7 +51,15 @@
                 {% endif %}
                 <div class="row justify-content-around">
                     <p><strong>Account #: </strong>{{account.account_number}}</p>
-                    <p><strong>Current Balance: </strong>${{account.balance}}</p>
+                    <p>
+                        <strong>
+                            Current Balance:
+                        </strong>
+                        {% if account.account_type.name == 'Credit' and account.balance > 0 %}
+                        -
+                        {% endif %}
+                        ${{account.balance|abs|floatformat:2}}
+                    </p>
                 </div>
                 <div class="row justify-content-start">
                     <p class="indent"><strong>Account Type: </strong>{{account.account_type.name}}</p>
@@ -74,13 +83,23 @@
                             <tr>
                                 <td>{{transaction.process_date}}</td>
                                 <td>{{transaction.desc}}</td>
+                                {% if account.account_type.name == 'Credit' %}
+                                <td>
+                                    {% if transaction.is_deposit %}
+                                    -
+                                    {% endif %}
+                                    ${{transaction.amount|abs|floatformat:2}}
+                                </td>
+                                <td>${{transaction.new_balance|abs|floatformat:2}}</td>
+                                {% else %}
                                 <td>
                                     {% if not transaction.is_deposit %}
                                     -
                                     {% endif %}
-                                    ${{transaction.amount}}
+                                    ${{transaction.amount|floatformat:2}}
                                 </td>
-                                <td>${{transaction.new_balance}}</td>
+                                <td>${{transaction.new_balance|floatformat:2}}</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </table>

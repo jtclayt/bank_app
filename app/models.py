@@ -26,6 +26,8 @@ class AccountManager(models.Manager):
                 errors['last_name'] = 'Last name does not match'
             if account.owner.id == user_id:
                 errors['owner'] = 'You cannot link your own account'
+            if account.account_type.name == 'Credit':
+                errors['account_type'] = 'Can\'t link to a credit account'
         else:
             errors['account_number'] = 'Account number does not exist'
         return errors
