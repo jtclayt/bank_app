@@ -190,3 +190,4 @@ class Transaction(BaseModel):
         on_delete=models.CASCADE
     )
     objects = TransactionManager()
+
