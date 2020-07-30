@@ -66,8 +66,13 @@ form {
 }
 
 .btn-primary {
+  background-color: rgb(1, 179, 1);
+  border:none;
+}
+
+.btn-primary:hover{
   background-color: rgb(31, 197, 31);
-  border: 1px solid rgb(31, 197, 31);
+  border:none;
 }
 
 /* General rules */

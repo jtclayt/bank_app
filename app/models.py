@@ -36,14 +36,20 @@ class TransactionManager(models.Manager):
     def validate_purchase(self, postData):
         errors = {}
         todaysDate = datetime.now().date()
-        if postData['date'] > todaysDate:
+        
+        if len(postData['date']) == 0:
+            errors['date'] = "Please enter a date"
+        elif datetime.strptime(postData['date'], "%Y-%m-%d").date() > todaysDate:
             errors['date'] = "Purchase must've been made today or in the past"
 
         if len(postData['desc']) < 2:
             errors['desc'] = "Description must be greater that 2 characters"
 
-        if not postData['amount'] > 0:
-            errors['amount'] = "Amount must be greater than 0"
+        if len(postData['amount']) == 0:
+            errors['amount'] = "Please enter an amount!"
+        elif not int(postData['amount']) > 0:
+            errors['amount'] = "Amount must be greater than $0"
+            
         return errors
 
     # Make a transfer
