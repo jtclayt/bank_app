@@ -39,7 +39,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
 
 # NGINX setup steps
-sudo cat deploy/nginx.txt | sed "s/server_name/server_name 1/" > /etc/nginx/sites-available/bank_app
+sudo cat deploy/nginx.txt | sed "s/server_name/server_name $1/" > /etc/nginx/sites-available/bank_app
 sudo ln -s /etc/nginx/sites-available/bank_app /etc/nginx/sites-enabled
 sudo nginx -t
 sudo rm /etc/nginx/sites-enabled/default
