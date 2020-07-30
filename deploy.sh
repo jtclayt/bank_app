@@ -1,6 +1,8 @@
 #!/bin/bash
 # Author: Justin Clayton
 # This script automates the deploy process for a django project on AWS
+# Make sure to create .env file with secret key before running!
+# Hit y on prompts if they come up.
 
 # Check required IP is provided
 if [ $# -ne 1 ]; then
@@ -25,6 +27,8 @@ sed -i "s/    os.path.join(BASE_DIR, \"static\"),//" settings.py
 echo 'STATIC_ROOT = os.path.join(BASE_DIR, "static/")' >> settings.py
 cd ..
 python manage.py collectstatic
+python manage.py makemigrations users
+python manage.py makemigrations app
 python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata app/data/app.json
@@ -35,7 +39,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
 
 # NGINX setup steps
-sudo cat deploy/nginx.txt | sed "s/server_name/server_name 1/" > /etc/nginx/sites-available/bank_app
+sudo cat deploy/nginx.txt | sed "s/server_name/server_name $1/" > /etc/nginx/sites-available/bank_app
 sudo ln -s /etc/nginx/sites-available/bank_app /etc/nginx/sites-enabled
 sudo nginx -t
 sudo rm /etc/nginx/sites-enabled/default
