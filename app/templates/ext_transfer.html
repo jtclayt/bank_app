@@ -54,7 +54,6 @@
                         <div class="form-group row">
                             <label for="account" class="col-sm-4">From:</label>
                             <select name="account" class="custom-select col-sm-8" required>
-                                <option disabled selected hidden>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
                                 <option value="{{account.id}}">
                                     {{account.account_type.name}} | Balance: ${{account.balance}}

@@ -38,20 +38,17 @@
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
+
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
-                <div class="col-4 offset-8">
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
-                </div>
                 <div class="col-sm-6">
                     <form action="{% url 'app:transfer' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">From:</label>
                             <select name="account_name" class="custom-select col-sm-8">
-                                <option selected>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}}</option>
+                                    <option>{{account.account_type.name}} | Balance: {{account.balance}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -59,7 +56,7 @@
                             <label for="recipient_name" class="col-sm-4">From:</label>
                             <select name="recipient_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
-                                {% for account in request.user.linked_accounts.all %}
+                                {% for account in request.user.accounts.all %}
                                     <option>{{account.account_type.name}}</option>
                                 {% endfor %}
                             </select>
@@ -72,6 +69,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="col-lg-3 background-white">
                 <h3>Quick Links</h3>
                 <ul class="quick_links">
@@ -83,6 +81,7 @@
                 </ul>
             </div>
         </div>
+
         <div class="footer">
             <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>
