@@ -41,6 +41,13 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" role="alert">
+                            <p>{{message}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <div class="row justify-content-around">
                     <p><strong>Account #: </strong>{{request.account.account_number}}</p>
                     <p><strong>Current Balance: </strong>${{request.account.balance}}</p>

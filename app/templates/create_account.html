@@ -45,20 +45,15 @@
                     <h3>Create New Account</h3>
                 </div>
                 <div class="col-sm-6">
-                    <form action="/create_account" method="POST">
+                    <form action="{% url 'app:accounts' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">Account Type:</label>
-                            <select name="account_name" class="custom-select col-sm-8">
-                                <option selected>-Choose a Type-</option>
-                                {% for account_type in request.account_types.all %}
+                            <select name="account_name" id="account_name" class="custom-select col-sm-8">
+                                {% for account_type in account_types %}
                                     <option>{{account_type.name}}</option>
                                 {% endfor %}
                             </select>
-                        </div>
-                        <div class="form-group row">
-                            <label for="balance" class="col-sm-4">Start Balance:</label>
-                            <input type="number" class="form-control col-sm-8" value="0.00">
                         </div>
                         <button type="submit" class="btn btn-primary offset-4">Create</button>
                     </form>
