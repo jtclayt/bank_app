@@ -47,7 +47,7 @@ class AccountsView(LoginRequiredMixin, Main, View):
     def post(self, request):
         user = request.user
         created_account = Account.objects.create_account(
-            owner=user, 
+            owner=user,
             account_type=AccountType.objects.get(name=request.POST['account_name']),
             balance=0
         )
@@ -108,20 +108,32 @@ class ContactsView(LoginRequiredMixin, Main, View):
     template = 'transfer_contacts.html'
 
     def post(self, request):
-        print(request.POST)
+        errors = Account.objects.validate_contact(
+            request.POST,
+            request.user.id
+        )
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+        else:
+            account = get_object_or_404(
+                Account,
+                account_number=request.POST['account_number']
+            )
+            request.user.linked_accounts.add(account)
         return redirect(reverse('app:contacts'))
 
 
 class ExternalTransferView(LoginRequiredMixin, Main, View):
     template = 'ext_transfer.html'
 
-    def get(self, request, contact_id):
+    def get(self, request, account_id):
         context = {
             'user': request.user,
             'accounts': request.user.accounts.all(),
-            'contact': get_object_or_404(get_user_model(), id=contact_id)
+            'contact': get_object_or_404(Account, id=account_id)
         }
-        return render(request, self.get_template, context)
+        return render(request, self.get_template(), context)
 
     def post(self, request, contact_id):
         print(request.POST)

@@ -34,7 +34,12 @@
                         <a href="/create_account" class="nav-link">Create an Account</a>
                     </li>
                 </ul>
-                <span class="navbar-text">Welcome, <a href="{% url 'users:edit' %}">{{ request.user.first_name }}</a></span>
+                <span class="navbar-text">
+                    Welcome,
+                    <a href="{% url 'users:edit' %}">
+                        {{ request.user.first_name }}
+                    </a>
+                </span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
@@ -43,11 +48,22 @@
                 <h5>Contacts:</h5>
                 <ul>
                     {% for linked_account in request.user.linked_accounts.all %}
-                        <li><a href="{% url 'app:external-transfer' account.id">{{linked_account.first_name}} {{linked_account.last_name}}</a></li>
+                        <li>
+                            <a href="{% url 'app:external_transfer' account_id=linked_account.id %}">
+                                {{linked_account.owner.first_name}} {{linked_account.owner.last_name}}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
                 <div class="col-sm-6">
                     <h4>Add a Contact</h4>
+                    {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                        <p>{{message}}</p>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
                     <form action="{% url 'app:contacts' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">

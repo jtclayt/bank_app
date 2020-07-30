@@ -12,6 +12,23 @@ class AccountManager(models.Manager):
             errors['balance'] = 'Balance must be greater than 0'
         return errors
 
+    def validate_contact(self, postData, user_id):
+        errors = {}
+        account = Account.objects.filter(
+            account_number=postData['account_number']
+        )
+        if len(account) > 0:
+            account = account[0]
+            if account.owner.first_name != postData['first_name']:
+                errors['first_name'] = 'First name does not match'
+            if account.owner.last_name != postData['last_name']:
+                errors['last_name'] = 'Last name does not match'
+            if account.owner.id == user_id:
+                errors['owner'] = 'You cannot link your own account'
+        else:
+            errors['account_number'] = 'Account number does not exist'
+        return errors
+
     def create_account(self, owner, account_type, balance=5):
         if not owner:
             raise ValueError('Account must have an owner')
@@ -36,7 +53,7 @@ class TransactionManager(models.Manager):
     def validate_purchase(self, postData):
         errors = {}
         todaysDate = datetime.now().date()
-        
+
         if len(postData['date']) == 0:
             errors['date'] = "Please enter a date"
         elif datetime.strptime(postData['date'], "%Y-%m-%d").date() > todaysDate:
@@ -49,7 +66,7 @@ class TransactionManager(models.Manager):
             errors['amount'] = "Please enter an amount!"
         elif not int(postData['amount']) > 0:
             errors['amount'] = "Amount must be greater than $0"
-            
+
         return errors
 
     # Make a transfer
@@ -131,8 +148,8 @@ class Account(BaseModel):
         related_name='accounts',
         on_delete=models.CASCADE
     )
-    linked_accounts = models.ManyToManyField(
-        "self",
+    linked_users = models.ManyToManyField(
+        get_user_model(),
         related_name='linked_accounts'
     )
     objects = AccountManager()

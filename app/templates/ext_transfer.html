@@ -40,31 +40,30 @@
         </nav>
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
-                <div class="col-4 offset-8">
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
-                </div>
                 <div class="col-sm-6">
-                    <form action="{% url 'app:external_transfer' %}" method="POST">
+                    <form action="{% url 'app:external_transfer' account_id=contact.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">From:</label>
                             <select name="account_name" class="custom-select col-sm-8">
                                 <option selected>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}}</option>
+                                    <option>{{account.account_type.name}} - ${{account.balance}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">To:</label>
-                            <input type="number" class="col-sm-8" name="account_name" placeholder="Account #">
+                            <input type="text" class="form-control col-sm-8"
+                                value="{{contact.account_number}}" readonly>
                         </div>
                         <div class="form-group row">
                             <label for="amount" class="col-sm-4">Amount:</label>
-                            <input type="number" class="form-control col-sm-8" name="amount">
+                            <input type="number" class="form-control col-sm-8"
+                                name="amount" placeholder="0.00">
                         </div>
                         <div class="form-group row">
-                            <label for="date" class="col-sm-4"></label>
+                            <label for="date" class="col-sm-4">Date:</label>
                             <input type="date" class="form-control col-sm-8" name="date">
                         </div>
                         <div class="form-group row">
