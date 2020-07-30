@@ -5,9 +5,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import random
+from datetime import datetime
 
 from .models import Account, AccountType, Transaction, TransactionType
+
+
 
 
 def index(request):
@@ -130,8 +132,38 @@ class ATMView(LoginRequiredMixin, Main, View):
     template = 'atm.html'
 
     def post(self, request):
-        print(request.POST)
-        return redirect(reverse('app:atm'))
+        errors = Transaction.objects.validate_atm(request.POST)
+        if len(errors) > 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect(reverse('app:atm'))
+        else:
+            accounts = request.user.accounts.all()
+            for account in accounts:
+                if account.account_type.name == request.POST['account']:
+                    this_account = account
+            desc = request.POST['description']
+            amount = request.POST['amount']
+            if request.POST['type'] == "Withdrawal":
+                new_balance = this_account.balance - float(request.POST['amount'])
+                is_deposit = False
+            elif request.POST['type'] == "Deposit":
+                new_balance = this_account.balance + float(request.POST['amount'])
+                is_deposit = True
+            process_date = datetime.now()
+            transaction_type = TransactionType.objects.get(name="ATM")
+            transaction = Transaction.objects.create(
+                desc = desc,
+                amount = amount,
+                new_balance = new_balance,
+                is_deposit = is_deposit,
+                process_date = process_date,
+                account = this_account,
+                transaction_type = transaction_type
+            )
+            this_account.balance = new_balance
+            this_account.save()
+            return redirect(reverse('app:accounts'))
 
 
 def create_account(request):
