@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import datetime
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 class AccountManager(models.Manager):
@@ -93,14 +94,23 @@ class TransactionManager(models.Manager):
     # External Transfer
     def validate_extransfer(self, postData):
         errors = {}
-        if not postData['account_number'] > 0:
-            errors['account_number'] = "Account number must be greater than 0"
-        if not postData['amount'] > 0:
+        if not float(postData['amount']) > 0:
             errors['amount'] = "Amount must be greater than 0"
-        todaysDate = datetime.now().date()
-        if postData['date'] > todaysDate:
+        try:
+            account = Account.objects.filter(id=postData['account'])
+            if len(account) > 0:
+                account = account[0]
+                if float(postData['amount']) > account.balance:
+                    errors['balance'] = 'Insufficient funds for transfer'
+            else:
+                errors['account'] = 'Please transfer from a valid account'
+        except MultiValueDictKeyError:
+            errors['account'] = 'Please select an account to transfer from'
+        todays_date = datetime.now().date()
+        transfer_date = datetime.strptime(postData['date'], "%Y-%m-%d").date()
+        if transfer_date < todays_date:
             errors['date'] = "Date must be today or a future date"
-        if len(postData['note']) < 2:
+        if len(postData['desc']) < 2:
             errors['note'] = "Note must be greater that 2 characters"
         return errors
 

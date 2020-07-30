@@ -41,34 +41,46 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
                 <div class="col-sm-6">
+                    <h4>Make an External Transfer</h4>
+                    {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                        <p>{{message}}</p>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
                     <form action="{% url 'app:external_transfer' account_id=contact.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account_name" class="col-sm-4">From:</label>
-                            <select name="account_name" class="custom-select col-sm-8">
-                                <option selected>-Choose an Account-</option>
+                            <label for="account" class="col-sm-4">From:</label>
+                            <select name="account" class="custom-select col-sm-8" required>
+                                <option disabled selected hidden>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}} - ${{account.balance}}</option>
+                                <option value="{{account.id}}">
+                                    {{account.account_type.name}} - ${{account.balance}}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="account_name" class="col-sm-4">To:</label>
+                            <label class="col-sm-4">To:</label>
                             <input type="text" class="form-control col-sm-8"
                                 value="{{contact.account_number}}" readonly>
                         </div>
                         <div class="form-group row">
                             <label for="amount" class="col-sm-4">Amount:</label>
                             <input type="number" class="form-control col-sm-8"
-                                name="amount" placeholder="0.00">
+                                name="amount" placeholder="0.00" required>
                         </div>
                         <div class="form-group row">
                             <label for="date" class="col-sm-4">Date:</label>
-                            <input type="date" class="form-control col-sm-8" name="date">
+                            <input type="date" class="form-control col-sm-8"
+                                name="date" required>
                         </div>
                         <div class="form-group row">
                             <label for="desc" class="col-sm-4">Note:</label>
-                            <input type="text" class="form-control col-sm-8" name="desc">
+                            <input type="text" class="form-control col-sm-8"
+                                name="desc" minlength="2">
                         </div>
                         <button type="submit" class="btn btn-primary offset-4">Submit</button>
                     </form>
