@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
 
-from .models import Account, AccountType, Transaction, TransactionType
+from .models import Account, AccountType, Transaction, TransactionType, Bill
 
 
 
@@ -116,8 +116,27 @@ class BillView(LoginRequiredMixin, Main, View):
     template = 'bill.html'
 
     def post(self, request):
-        print(request.POST)
-        return redirect(reverse('app:bill'))
+        errors = Bill.objects.validate_bill(request.POST)
+        if len(errors) > 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect(reverse('app:bill'))
+        else:
+            from_account = Account.objects.get(id=request.POST['from_account'])
+            name = request.POST['name']
+            bill_account_number = request.POST['bill_account_number']
+            payment = request.POST['payment']
+            date = datetime.now()
+            owner = request.user
+            bill = Bill.objects.create(
+                bill_account_number = bill_account_number,
+                name = name,
+                payment = payment,
+                date = date,
+                from_account = from_account,
+                owner = owner
+            )
+            return redirect(reverse('app:accounts'))
 
 
 class ContactsView(LoginRequiredMixin, Main, View):
@@ -231,4 +250,24 @@ def create_account(request):
             'account_types': AccountType.objects.all()
         }
         return render(request, 'create_account.html', context)
+
+@login_required()
+def pay_bill(request, bill_id):
+    bill = get_object_or_404(Bill, id=bill_id)
+    account = get_object_or_404(Account, id=bill.from_account.id)
+    transaction = Transaction.objects.create(
+        desc = bill.name,
+        amount = bill.payment,
+        new_balance = account.balance - bill.payment,
+        is_deposit = False,
+        process_date = datetime.now(),
+        account = account,
+        transaction_type = TransactionType.objects.get(id=1)
+    )
+    account.balance -= bill.payment
+    account.save()
+    messages.success(request, 'Bill Successfully Paid')
+    return redirect(reverse('app:accounts'))
+
+
 
