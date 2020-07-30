@@ -26,6 +26,8 @@ class AccountManager(models.Manager):
                 errors['last_name'] = 'Last name does not match'
             if account.owner.id == user_id:
                 errors['owner'] = 'You cannot link your own account'
+            if account.account_type.name == 'Credit':
+                errors['account_type'] = 'Can\'t link to a credit account'
         else:
             errors['account_number'] = 'Account number does not exist'
         return errors
@@ -79,20 +81,6 @@ class TransactionManager(models.Manager):
             errors['amount'] = "Amount must be greater than $0"
         return errors
 
-    # Pay a Bill
-    def validate_bill(self, postData):
-        errors = {}
-        if not postData['account_number'] > 0:
-            errors['account_number'] = "Account number must be greater than 0"
-        if not postData['amount'] > 0:
-            errors['amount'] = "Amount must be greater than 0"
-        todaysDate = datetime.now().date()
-        if postData['date'] > todaysDate:
-            errors['date'] = "Date must be today or a future date"
-        if len(postData['note']) < 2:
-            errors['note'] = "Note must be greater that 2 characters"
-        return errors
-
     # External Transfer
     def validate_extransfer(self, postData):
         errors = {}
@@ -127,6 +115,17 @@ class TransactionManager(models.Manager):
             errors['type'] = "You must select Withdrawal or Deposit."
         if len(postData['description']) <= 0:
             errors['description'] = "Enter a short description for this transaction."
+        return errors
+
+    #Bills
+    def validate_bill(self, postData):
+        errors = {}
+        if len(postData['name']) < 1:
+            errors['name'] = "Please enter a name for this bill."
+        if len(postData['bill_account_number']) < 1:
+            errors['number'] = "You must provide a bill account number."
+        if len(postData['payment']) < 1:
+            errors['payment'] = "Enter a payment amount."
         return errors
 
 
@@ -191,4 +190,25 @@ class Transaction(BaseModel):
         related_name='transactions',
         on_delete=models.CASCADE
     )
+    objects = TransactionManager()
+
+class Bill(BaseModel):
+    bill_account_number = models.IntegerField()
+    name = models.CharField(max_length=150)
+    payment = models.FloatField()
+    date = models.DateField()
+    from_account = models.ForeignKey(
+        Account,
+        related_name='bills',
+        on_delete=models.CASCADE
+    )
+    owner = models.ForeignKey(
+        get_user_model(),
+        related_name='bills',
+        on_delete=models.CASCADE
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     objects = TransactionManager()

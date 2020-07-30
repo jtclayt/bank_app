@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>Account Details</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
+    {% load mathfilters %}
 </head>
 <body>
     <div class="container">
@@ -26,9 +27,6 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">Investments</a>
                     </li>
                     <li class="nav-item">
                         <a href="/create_account" class="nav-link">Create an Account</a>
@@ -49,32 +47,57 @@
                     {% endfor %}
                 {% endif %}
                 <div class="row justify-content-around">
-                    <p><strong>Account #: </strong>{{request.account.account_number}}</p>
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
+                    <p><strong>Account #: </strong>{{account.account_number}}</p>
+                    <p>
+                        <strong>
+                            Current Balance:
+                        </strong>
+                        {% if account.account_type.name == 'Credit' and account.balance > 0 %}
+                        -
+                        {% endif %}
+                        ${{account.balance|abs|floatformat:2}}
+                    </p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>Account Type: </strong>{{request.account.account_type.name}}</p>
+                    <p class="indent"><strong>Account Type: </strong>{{account.account_type.name}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>APY: </strong>{{request.account.account_type.interest_rate}}%</p>
+                    <p class="indent">
+                        <strong>APY: </strong>
+                        {{interest_percent}}%
+                    </p>
                 </div>
                 <div class="row justify-content-center">
-                    <table class="table">
-                        <tr>
+                    <h4>Transactions</h4>
+                    <table class="table table-striped">
+                        <thead>
                             <th>Date</th>
                             <th>Description</th>
                             <th>Amount</th>
                             <th>Balance</th>
-                        </tr>
-                        {% for transaction in request.transactions.all %}
-                            {% if transaction.account.id == request.account.id %}
-                                <tr>
-                                    <td>{{transaction.process_date}}</td>
-                                    <td>{{transaction.desc}}</td>
-                                    <td>${{transaction.amount}}</td>
-                                    <td>${{transaction.new_balance}}</td>
-                                </tr>
-                            {% endif %}
+                        </thead>
+                        {% for transaction in transactions %}
+                            <tr>
+                                <td>{{transaction.process_date}}</td>
+                                <td>{{transaction.desc}}</td>
+                                {% if account.account_type.name == 'Credit' %}
+                                <td>
+                                    {% if transaction.is_deposit %}
+                                    -
+                                    {% endif %}
+                                    ${{transaction.amount|abs|floatformat:2}}
+                                </td>
+                                <td>${{transaction.new_balance|abs|floatformat:2}}</td>
+                                {% else %}
+                                <td>
+                                    {% if not transaction.is_deposit %}
+                                    -
+                                    {% endif %}
+                                    ${{transaction.amount|floatformat:2}}
+                                </td>
+                                <td>${{transaction.new_balance|floatformat:2}}</td>
+                                {% endif %}
+                            </tr>
                         {% endfor %}
                     </table>
                 </div>
