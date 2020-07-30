@@ -32,9 +32,22 @@ class Main(object):
     template = None
 
     def get(self, request):
+        basic_total = 0
+        credit_total = 0
+        loan_total = 0
+        for account in request.user.accounts.all():
+            if account.account_type.name == "Credit":
+                credit_total += account.balance
+            elif account.account_type.name == "Loan":
+                loan_total += account.balance
+            else:
+                basic_total += account.balance
         context = {
             'user': request.user,
-            'accounts': request.user.accounts.all()
+            'accounts': request.user.accounts.all(),
+            'basic_total': basic_total,
+            'credit_total': credit_total,
+            'loan_total': loan_total
         }
         return render(request, self.get_template(), context)
 
@@ -187,17 +200,14 @@ class ATMView(LoginRequiredMixin, Main, View):
                 messages.error(request, value)
             return redirect(reverse('app:atm'))
         else:
-            accounts = request.user.accounts.all()
-            for account in accounts:
-                if account.account_type.name == request.POST['account']:
-                    this_account = account
+            account = get_object_or_404(Account, id=request.POST['account'])
             desc = request.POST['description']
             amount = request.POST['amount']
             if request.POST['type'] == "Withdrawal":
-                new_balance = this_account.balance - float(request.POST['amount'])
+                new_balance = account.balance - float(request.POST['amount'])
                 is_deposit = False
             elif request.POST['type'] == "Deposit":
-                new_balance = this_account.balance + float(request.POST['amount'])
+                new_balance = account.balance + float(request.POST['amount'])
                 is_deposit = True
             process_date = datetime.now()
             transaction_type = TransactionType.objects.get(name="ATM")
@@ -207,11 +217,11 @@ class ATMView(LoginRequiredMixin, Main, View):
                 new_balance = new_balance,
                 is_deposit = is_deposit,
                 process_date = process_date,
-                account = this_account,
+                account = account,
                 transaction_type = transaction_type
             )
-            this_account.balance = new_balance
-            this_account.save()
+            account.balance = new_balance
+            account.save()
             return redirect(reverse('app:accounts'))
 
 @login_required()
