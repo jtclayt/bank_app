@@ -169,7 +169,8 @@ class ExternalTransferView(LoginRequiredMixin, Main, View):
         to_acct.balance += trans_amount
         from_acct.save()
         to_acct.save()
-        return redirect(reverse('app:accounts'))
+        messages.success(request, 'External transfer successfully processed')
+        return redirect(reverse('app:accounts_detail', args=(from_acct.id,)))
 
 
 class ATMView(LoginRequiredMixin, Main, View):
