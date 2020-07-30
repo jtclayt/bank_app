@@ -55,19 +55,13 @@ class TransactionManager(models.Manager):
     # Log a purchase
     def validate_purchase(self, postData):
         errors = {}
-        todaysDate = datetime.now().date()
-
-        if len(postData['date']) == 0:
-            errors['date'] = "Please enter a date"
-        elif datetime.strptime(postData['date'], "%Y-%m-%d").date() > todaysDate:
-            errors['date'] = "Purchase must've been made today or in the past"
 
         if len(postData['desc']) < 2:
             errors['desc'] = "Description must be greater that 2 characters"
 
         if len(postData['amount']) == 0:
             errors['amount'] = "Please enter an amount!"
-        elif not int(postData['amount']) > 0:
+        elif not float(postData['amount']) > 0:
             errors['amount'] = "Amount must be greater than $0"
 
         return errors
@@ -75,8 +69,16 @@ class TransactionManager(models.Manager):
     # Make a transfer
     def validate_transfer(self, postData):
         errors = {}
-        if not postData['amount'] > 0:
-            errors['amount'] = "Amount must be greater than 0"
+        print(postData)
+        if 'to_account_id' not in postData:
+            errors['account_id'] = "Please select a destination account"
+        elif postData['account_id'] == postData['to_account_id']:
+            errors['account_id'] = "Cannot send money to the same account!"
+
+        if len(postData['amount']) == 0:
+            errors['amount'] = "Please enter an amount!"
+        elif not float(postData['amount']) > 0:
+            errors['amount'] = "Amount must be greater than $0"
         return errors
 
     # External Transfer

@@ -83,6 +83,12 @@ class AccountsView(LoginRequiredMixin, Main, View):
 
 class PurchaseView(LoginRequiredMixin, Main, View):
     template = 'purchase.html'
+    
+    def get(self, request):
+        context = {
+            'date': datetime.now().date()
+        }
+        return render(request, self.get_template(), context)
 
     def post(self, request):
         errors = Transaction.objects.validate_purchase(request.POST)
@@ -92,17 +98,17 @@ class PurchaseView(LoginRequiredMixin, Main, View):
             return redirect(reverse('app:purchase'))
 
         selected_account = Account.objects.get(id=request.POST['account_id'])
-        new_balance = selected_account.balance - int(request.POST['amount'])
+        new_balance = selected_account.balance - float(request.POST['amount'])
 
         selected_account.balance = new_balance
         selected_account.save()
 
         Transaction.objects.create(
             desc = request.POST['desc'],
-            amount = request.POST['amount'],
+            amount = float(request.POST['amount']),
             new_balance = new_balance,
             is_deposit = False,
-            process_date = request.POST['date'],
+            process_date = datetime.now().date(),
             account = selected_account,
             transaction_type = TransactionType.objects.get(name="Purchase")
         )
@@ -115,7 +121,47 @@ class TransferView(LoginRequiredMixin, Main, View):
     template = 'transfer.html'
 
     def post(self, request):
-        print(request.POST)
+        errors = Transaction.objects.validate_transfer(request.POST)
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+            return redirect(reverse('app:transfer'))
+
+        sending_account = Account.objects.get(id=request.POST['account_id'])
+        receiving_account = Account.objects.get(id=request.POST['to_account_id'])
+
+        # Updating account balances
+        new_balance = sending_account.balance - float(request.POST['amount'])
+        receiving_new_balance = receiving_account.balance + float(request.POST['amount'])
+
+        sending_account.balance = new_balance
+        sending_account.save()
+
+        receiving_account.balance = receiving_new_balance
+        receiving_account.save()
+
+        # Withdrawal Transaction
+        Transaction.objects.create(
+            desc = "Transfer to "+receiving_account.account_number,
+            amount = float(request.POST['amount']),
+            new_balance = new_balance,
+            is_deposit = False,
+            process_date = datetime.now().date(),
+            account = sending_account,
+            transaction_type = TransactionType.objects.get(name="Transfer")
+        )
+        # Deposit Transaction
+        Transaction.objects.create(
+            desc = "Transfer from "+sending_account.account_number,
+            amount = float(request.POST['amount']),
+            new_balance = receiving_new_balance,
+            is_deposit = True,
+            process_date = datetime.now().date(),
+            account = receiving_account,
+            transaction_type = TransactionType.objects.get(name="Transfer")
+        )
+
+        messages.success(request, "You have successfully transfered funds from $"+str(float(request.POST['amount']))+" "+sending_account.account_number+" to "+receiving_account.account_number)
         return redirect(reverse('app:transfer'))
 
 

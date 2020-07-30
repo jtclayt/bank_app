@@ -37,32 +37,51 @@
         </nav>
 
         <div class="row justify-content-center">
+
             <div class="col-lg-8 background-white">
-                <div class="col-sm-6">
+
+                <div class="col-sm-10">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger" role="alert">
+                                    <p>{{message}}</p>
+                                </div>
+                            {% endif %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success" role="alert">
+                                    <p>{{message}}</p>
+                                </div>
+                            {% endif %}
+                            {% endfor %}
+                    {% endif %}
+
                     <form action="{% url 'app:transfer' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account_name" class="col-sm-4">From:</label>
-                            <select name="account_name" class="custom-select col-sm-8">
+                            <label for="account_id" class="col-sm-3">From:</label>
+                            <select name="account_id" id="account_id" class="custom-select col-sm-8">
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}} | Balance: {{account.balance}}</option>
+                                <option value="{{account.id}}">{{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance}}</option>
                                 {% endfor %}
                             </select>
                         </div>
+                        
                         <div class="form-group row">
-                            <label for="recipient_name" class="col-sm-4">From:</label>
-                            <select name="recipient_name" class="custom-select col-sm-8">
-                                <option selected>-Choose an Account-</option>
+                            <label for="to_account_id" class="col-sm-3">To:</label>
+                            <select name="to_account_id" id="to_account_id" class="custom-select col-sm-8">
+                                <option value="" disabled selected hidden> - Choose an account - </option>
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}}</option>
+                                    <option value="{{account.id}}">{{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance}}</option>
                                 {% endfor %}
                             </select>
                         </div>
+
                         <div class="form-group row">
-                            <label for="amount" class="col-sm-4">Amount:</label>
-                            <input type="number" class="form-control col-sm-8" name="amount">
+                            <label for="amount" class="col-sm-3">Amount:</label>
+                            <input type="number" class="form-control col-sm-5" name="amount" placeholder="0.00">
                         </div>
-                        <button type="submit" class="btn btn-primary offset-4">Submit</button>
+                        <button type="submit" class="btn btn-primary offset-3">Submit</button>
                     </form>
                 </div>
             </div>
