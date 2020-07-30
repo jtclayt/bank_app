@@ -24,6 +24,10 @@ sed -i "s/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \[\'$1\'\]/" settings.py
 sed -i "s/    os.path.join(BASE_DIR, \"static\"),//" settings.py
 echo 'STATIC_ROOT = os.path.join(BASE_DIR, "static/")' >> settings.py
 cd ..
+python manage.py collectstatic
+python manage.py makemigrations
+python manage.py migrate
+python manage.py loaddata app/data/app.json
 
 # Gunicorn setup steps
 sudo cat deploy/gunicorn.txt > /etc/systemd/system/gunicorn.service
