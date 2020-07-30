@@ -165,7 +165,7 @@ class ATMView(LoginRequiredMixin, Main, View):
             this_account.save()
             return redirect(reverse('app:accounts'))
 
-
+@login_required()
 def create_account(request):
     if request.method == 'GET':
         context = {
