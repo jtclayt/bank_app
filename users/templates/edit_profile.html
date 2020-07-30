@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>Edit Profile</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
                         <a href="/create_account" class="nav-link">Create an Account</a>
                     </li>
                 </ul>
-                <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
+                <span class="navbar-text">Welcome, <a href="{% url 'users:edit' %}">{{ request.user.first_name }}</a></span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
@@ -42,8 +42,13 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
                 <div class="col-sm-6">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <p>{{ message.message }}</p>
+                        {% endfor %}
+                    {% endif %}
                     <h3>Edit Profile</h3>
-                    <form action="" method="POST">
+                    <form action="{% url 'users:edit' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="first_name" class="col-sm-4">First Name</label>
@@ -61,15 +66,15 @@
                     </form>
 
                     <h3>Change Password</h3>
-                    <form action="" method="post">
+                    <form action="{% url 'users:change_password' %}" method="post">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="old_password" class="col-sm-4">Old Password</label>
                             <input type="password" name="old_password" id="old_password" class="form-control col-sm-8">
                         </div>
                         <div class="form-group row">
-                            <label for="new_password" class="col-sm-4">New Password</label>
-                            <input type="password" name="new_password" id="new_password" class="form-control col-sm-8">
+                            <label for="password" class="col-sm-4">New Password</label>
+                            <input type="password" name="password" id="password" class="form-control col-sm-8">
                         </div>
                         <div class="form-group row">
                             <label for="confirm_password" class="col-sm-4">Confirm Password</label>

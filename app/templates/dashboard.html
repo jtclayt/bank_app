@@ -7,7 +7,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'css/base.css' %}"> 
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
               <a href="/create_account" class="nav-link">Create an Account</a>
             </li>
           </ul>
-          <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
+          <span class="navbar-text">Welcome, <a href="{% url 'users:edit' %}">{{ request.user.first_name }}</a></span>
           <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
       </div>
     </nav>
@@ -49,8 +49,8 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
+            {% for account in request.user.accounts.all %}
+              {% if account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td>{{account.account_type.name}}</td>
@@ -67,8 +67,8 @@
               <th>Type</th>
               <th>Current Balance</th>
             </tr>
-            {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Loan" %}
+            {% for account in request.user.accounts.all %}
+              {% if account.account_type.name == "Loan" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td>{{account.account_type.name}}</td>
@@ -91,7 +91,7 @@
               <th>Current Balance</th>
             </tr>
             {% for account in request.accounts.all %}
-              {% if account.owner.id == request.user.id and account.account_type.name == "Credit" %}
+              {% if account.account_type.name == "Credit" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td></td>

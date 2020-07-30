@@ -34,7 +34,7 @@
                         <a href="/create_account" class="nav-link">Create an Account</a>
                     </li>
                 </ul>
-                <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
+                <span class="navbar-text">Welcome, <a href="{% url 'users:edit' %}">{{ request.user.first_name }}</a></span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
