@@ -26,7 +26,7 @@ sed -i "s/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \[\'$1\'\]/" settings.py
 sed -i "s/    os.path.join(BASE_DIR, \"static\"),//" settings.py
 echo 'STATIC_ROOT = os.path.join(BASE_DIR, "static/")' >> settings.py
 cd ..
-python manage.py collectstatic
+python manage.py collectstatic # say yes if prompted
 python manage.py makemigrations users
 python manage.py makemigrations app
 python manage.py makemigrations
@@ -34,11 +34,15 @@ python manage.py migrate
 python manage.py loaddata app/data/app.json
 
 # Gunicorn setup steps
+sudo touch /etc/systemd/system/gunicorn.service
+sudo chmod u+w /etc/systemd/system/gunicorn.service
 sudo cat deploy/gunicorn.txt > /etc/systemd/system/gunicorn.service
 sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
 
 # NGINX setup steps
+sudo touch /etc/nginx/sites-available/bank_app
+sudo chmod u+w /etc/nginx/sites-available/bank_app
 sudo cat deploy/nginx.txt | sed "s/server_name/server_name $1/" > /etc/nginx/sites-available/bank_app
 sudo ln -s /etc/nginx/sites-available/bank_app /etc/nginx/sites-enabled
 sudo nginx -t
