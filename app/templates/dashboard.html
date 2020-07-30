@@ -43,7 +43,7 @@
 
       <div class="row justify-content-center">
         <div class="col-lg-8 background-white">
-          <table class="table">
+          <table class="table table-striped table-hover">
             <h3>Deposit Accounts</h3>
             <thead>
               <th>Account</th>
@@ -89,14 +89,14 @@
             </tr>
           </table> -->
 
-          <table class="table">
+          <table class="table table-striped table-hover">
             <h3>Credit Cards</h3>
             <thead>
               <th>Account</th>
               <th></th>
               <th>Current Balance</th>
             </thead>
-            {% for account in accounts.all %}
+            {% for account in request.user.accounts.all %}
               {% if account.account_type.name == "Credit" %}
                 <tr>
                   <td>
@@ -126,6 +126,36 @@
                 </strong>
               </td>
             </tr>
+          </table>
+
+          {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" role="alert">
+                            <p>{{message}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+          <table class="table table-striped table-hover">
+            <h3>My Bills</h3>
+            <thead>
+              <th>Name</th>
+              <th>Account Number</th>
+              <th>Payment</th>
+              <th></th>
+            </thead>
+            {% for bill in request.user.bills.all %}
+              <tr>
+                <td>{{bill.name}}</td>
+                <td>{{bill.bill_account_number}}</td>
+                <td>{{bill.payment}}</td>
+                <td>
+                  <form action="{% url 'app:paybill' bill_id=bill.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Pay Bill</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
           </table>
         </div>
 
