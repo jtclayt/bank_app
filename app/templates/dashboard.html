@@ -30,9 +30,6 @@
               <a href="{% url 'app:accounts' %}" class="nav-link">Accounts</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link">Investments</a>
-            </li>
-            <li class="nav-item">
               <a href="/create_account" class="nav-link">Create an Account</a>
             </li>
           </ul>
@@ -65,29 +62,6 @@
               <td><strong>${{basic_total|floatformat:2}}</strong></td>
             </tr>
           </table>
-
-          <!-- <table class="table">
-            <h3>Loans</h3>
-            <thead>
-              <th>Account</th>
-              <th>Type</th>
-              <th>Current Balance</th>
-            </thead>
-            {% for account in request.user.accounts.all %}
-              {% if account.account_type.name == "Loan" %}
-                <tr>
-                  <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
-                  <td>{{account.account_type.name}}</td>
-                  <td>{{account.balance}}</td>
-                </tr>
-              {% endif %}
-            {% endfor %}
-            <tr>
-              <td><strong>Totals</strong></td>
-              <td></td>
-              <td><strong>${{loan_total}}</strong></td>
-            </tr>
-          </table> -->
 
           <table class="table table-striped table-hover">
             <h3>Credit Cards</h3>
