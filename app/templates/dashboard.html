@@ -54,14 +54,14 @@
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td>{{account.account_type.name}}</td>
-                  <td>${{account.balance}}</td>
+                  <td>${{account.balance|floatformat:2}}</td>
                 </tr>
               {% endif %}
             {% endfor %}
             <tr class="total">
               <td><strong>Totals</strong></td>
               <td></td>
-              <td><strong>${{basic_total}}</strong></td>
+              <td><strong>${{basic_total|floatformat:2}}</strong></td>
             </tr>
           </table>
 
@@ -100,14 +100,14 @@
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
                   <td></td>
-                  <td>${{account.balance}}</td>
+                  <td>${{account.balance|floatformat:2}}</td>
                 </tr>
               {% endif %}
             {% endfor %}
             <tr class="total">
               <td><strong>Totals</strong></td>
               <td></td>
-              <td><strong>${{credit_total}}</strong></td>
+              <td><strong>${{credit_total|floatformat:2}}</strong></td>
             </tr>
           </table>
         </div>

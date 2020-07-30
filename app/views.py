@@ -32,6 +32,22 @@ class Main(object):
     template = None
 
     def get(self, request):
+        context = {
+            'user': request.user,
+            'accounts': request.user.accounts.all()
+        }
+        return render(request, self.get_template(), context)
+
+    def get_template(self):
+        if self.template is not None:
+            return self.template
+        raise ImproperlyConfigured('Template not defined.')
+
+
+class AccountsView(LoginRequiredMixin, Main, View):
+    template = 'dashboard.html'
+
+    def get(self, request):
         basic_total = 0
         credit_total = 0
         loan_total = 0
@@ -50,15 +66,6 @@ class Main(object):
             'loan_total': loan_total
         }
         return render(request, self.get_template(), context)
-
-    def get_template(self):
-        if self.template is not None:
-            return self.template
-        raise ImproperlyConfigured('Template not defined.')
-
-
-class AccountsView(LoginRequiredMixin, Main, View):
-    template = 'dashboard.html'
 
     def post(self, request):
         user = request.user
