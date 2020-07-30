@@ -19,9 +19,9 @@ fi
 
 # Modify settings.py
 cd bank_app
-sed -i "s/DEBUG = True/DEBUG = True/" settings.py
+sed -i "s/DEBUG = True/DEBUG = False/" settings.py
 sed -i "s/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \[\'$1\'\]/" settings.py
-sed -i "s/os\.path\.join\(BASE_DIR, \"static\"\)\,//" settings.py
-echo 'STATIC_ROOT = os.path.join(BASE_DIR, \"static/\")' >> settings.py
+sed -i "s/\n    os.path.join(BASE_DIR, \"static\"),//" settings.py
+echo 'STATIC_ROOT = os.path.join(BASE_DIR, "static/")' >> settings.py
 
 
