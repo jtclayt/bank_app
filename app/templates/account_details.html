@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>Account Details</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -49,32 +49,39 @@
                     {% endfor %}
                 {% endif %}
                 <div class="row justify-content-around">
-                    <p><strong>Account #: </strong>{{request.account.account_number}}</p>
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
+                    <p><strong>Account #: </strong>{{account.account_number}}</p>
+                    <p><strong>Current Balance: </strong>${{account.balance}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>Account Type: </strong>{{request.account.account_type.name}}</p>
+                    <p class="indent"><strong>Account Type: </strong>{{account.account_type.name}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>APY: </strong>{{request.account.account_type.interest_rate}}%</p>
+                    <p class="indent">
+                        <strong>APY: </strong>
+                        {{interest_percent}}%
+                    </p>
                 </div>
                 <div class="row justify-content-center">
+                    <h4>Transactions</h4>
                     <table class="table">
-                        <tr>
+                        <thead>
                             <th>Date</th>
                             <th>Description</th>
                             <th>Amount</th>
                             <th>Balance</th>
-                        </tr>
-                        {% for transaction in request.transactions.all %}
-                            {% if transaction.account.id == request.account.id %}
-                                <tr>
-                                    <td>{{transaction.process_date}}</td>
-                                    <td>{{transaction.desc}}</td>
-                                    <td>${{transaction.amount}}</td>
-                                    <td>${{transaction.new_balance}}</td>
-                                </tr>
-                            {% endif %}
+                        </thead>
+                        {% for transaction in transactions %}
+                            <tr>
+                                <td>{{transaction.process_date}}</td>
+                                <td>{{transaction.desc}}</td>
+                                <td>
+                                    {% if not transaction.is_deposit %}
+                                    -
+                                    {% endif %}
+                                    ${{transaction.amount}}
+                                </td>
+                                <td>${{transaction.new_balance}}</td>
+                            </tr>
                         {% endfor %}
                     </table>
                 </div>

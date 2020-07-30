@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>External Transfer</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -74,7 +74,7 @@
                         <div class="form-group row">
                             <label for="date" class="col-sm-4">Date:</label>
                             <input type="date" class="form-control col-sm-8"
-                                name="date" required>
+                                name="date" value="{{today}}" readonly required>
                         </div>
                         <div class="form-group row">
                             <label for="desc" class="col-sm-4">Note:</label>
