@@ -49,32 +49,39 @@
                     {% endfor %}
                 {% endif %}
                 <div class="row justify-content-around">
-                    <p><strong>Account #: </strong>{{request.account.account_number}}</p>
-                    <p><strong>Current Balance: </strong>${{request.account.balance}}</p>
+                    <p><strong>Account #: </strong>{{account.account_number}}</p>
+                    <p><strong>Current Balance: </strong>${{account.balance}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>Account Type: </strong>{{request.account.account_type.name}}</p>
+                    <p class="indent"><strong>Account Type: </strong>{{account.account_type.name}}</p>
                 </div>
                 <div class="row justify-content-start">
-                    <p class="indent"><strong>APY: </strong>{{request.account.account_type.interest_rate}}%</p>
+                    <p class="indent">
+                        <strong>APY: </strong>
+                        {{interest_percent}}%
+                    </p>
                 </div>
                 <div class="row justify-content-center">
+                    <h4>Transactions</h4>
                     <table class="table">
-                        <tr>
+                        <thead>
                             <th>Date</th>
                             <th>Description</th>
                             <th>Amount</th>
                             <th>Balance</th>
-                        </tr>
-                        {% for transaction in request.transactions.all %}
-                            {% if transaction.account.id == request.account.id %}
-                                <tr>
-                                    <td>{{transaction.process_date}}</td>
-                                    <td>{{transaction.desc}}</td>
-                                    <td>${{transaction.amount}}</td>
-                                    <td>${{transaction.new_balance}}</td>
-                                </tr>
-                            {% endif %}
+                        </thead>
+                        {% for transaction in transactions %}
+                            <tr>
+                                <td>{{transaction.process_date}}</td>
+                                <td>{{transaction.desc}}</td>
+                                <td>
+                                    {% if not transaction.is_deposit %}
+                                    -
+                                    {% endif %}
+                                    ${{transaction.amount}}
+                                </td>
+                                <td>${{transaction.new_balance}}</td>
+                            </tr>
                         {% endfor %}
                     </table>
                 </div>

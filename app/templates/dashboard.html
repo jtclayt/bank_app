@@ -44,11 +44,11 @@
         <div class="col-lg-8 background-white">
           <table class="table">
             <h3>Deposit Accounts</h3>
-            <tr>
+            <thead>
               <th>Account</th>
               <th>Type</th>
               <th>Current Balance</th>
-            </tr>
+            </thead>
             {% for account in request.user.accounts.all %}
               {% if account.account_type.name == "Checking" or account.account_type.name == "Savings" %}
                 <tr>
@@ -60,13 +60,13 @@
             {% endfor %}
           </table>
 
-          <table class="table">
+          <!-- <table class="table">
             <h3>Loans</h3>
-            <tr>
+            <thead>
               <th>Account</th>
               <th>Type</th>
               <th>Current Balance</th>
-            </tr>
+            </thead>
             {% for account in request.user.accounts.all %}
               {% if account.account_type.name == "Loan" %}
                 <tr>
@@ -81,15 +81,15 @@
               <td></td>
               <td><strong>$10,000.50</strong></td>
             </tr>
-          </table>
+          </table> -->
 
           <table class="table">
             <h3>Credit Cards</h3>
-            <tr>
+            <thead>
               <th>Account</th>
               <th></th>
               <th>Current Balance</th>
-            </tr>
+            </thead>
             {% for account in request.accounts.all %}
               {% if account.account_type.name == "Credit" %}
                 <tr>
