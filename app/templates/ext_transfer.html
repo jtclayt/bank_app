@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>External Transfer</title>
+    <title>External Transfer | Monolith Bank</title>
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -18,7 +21,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
-            <a href="" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
+            <a href="{% url 'app:accounts' %}" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -37,8 +40,8 @@
         </nav>
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
-                <div class="col-sm-6">
-                    <h4>Make an External Transfer</h4>
+                <div class="col-sm-10">
+                    <h4 class="pb-3">Make an External Transfer</h4>
                     {% if messages %}
                         <div class="alert alert-danger" role="alert">
                         {% for message in messages %}
@@ -49,36 +52,39 @@
                     <form action="{% url 'app:external_transfer' account_id=contact.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account" class="col-sm-4">From:</label>
+                            <label for="account" class="col-sm-3">From:</label>
                             <select name="account" class="custom-select col-sm-8" required>
                                 {% for account in request.user.accounts.all %}
                                 <option value="{{account.id}}">
-                                    {{account.account_type.name}} | Balance: ${{account.balance}}
+                                    {{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance}}
                                 </option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4">To:</label>
-                            <input type="text" class="form-control col-sm-8"
+                            <label class="col-sm-3">To:</label>
+                            <input type="text" class="form-control col-sm-5"
                                 value="{{contact.account_number}}" readonly>
                         </div>
                         <div class="form-group row">
-                            <label for="amount" class="col-sm-4">Amount:</label>
-                            <input type="number" class="form-control col-sm-8"
+                            <label for="amount" class="col-sm-3">Amount:</label>
+                            <input type="number" class="form-control col-sm-5"
                                 name="amount" placeholder="0.00" required>
                         </div>
                         <div class="form-group row">
-                            <label for="date" class="col-sm-4">Date:</label>
-                            <input type="date" class="form-control col-sm-8"
+                            <label for="date" class="col-sm-3">Date:</label>
+                            <input type="date" class="form-control col-sm-5"
                                 name="date" value="{{today}}" readonly required>
                         </div>
                         <div class="form-group row">
-                            <label for="desc" class="col-sm-4">Note:</label>
-                            <input type="text" class="form-control col-sm-8"
+                            <label for="desc" class="col-sm-3">Note:</label>
+                            <input type="text" class="form-control col-sm-5"
                                 name="desc" minlength="2">
                         </div>
-                        <button type="submit" class="btn btn-primary offset-4">Submit</button>
+                        <div class="form-group row">
+                            <p class="col-sm-3"></p>
+                            <button type="submit" class="btn btn-primary form-control col-sm-3">Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>

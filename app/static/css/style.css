@@ -1,5 +1,6 @@
 /* HTML selector rules */
 
+
 ul {
   list-style: none;
 }
@@ -24,7 +25,7 @@ form {
 .background-white {
   background-color: white;
   border-radius: 5px;
-  margin: 20px;
+  margin: 15px;
   padding: 15px;
 }
 
@@ -44,7 +45,13 @@ form {
   border:none;
 }
 
-.btn-primary:hover{
+.btn-secondary {
+  background-color: rgb(1, 179, 1);
+  border:none;
+  margin: -30px 0px;
+}
+
+.btn-primary:hover, .btn-secondary:hover{
   background-color: rgb(31, 197, 31);
   border:none;
 }

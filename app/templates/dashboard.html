@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accounts</title>
+  <title>Dashboard | Monolith Bank</title>
   {% load static %}
+  <link rel="shortcut icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+
   <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -20,7 +23,7 @@
 <body>
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
-      <a href="" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
+      <a href="{% url 'app:accounts' %}" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -40,97 +43,106 @@
 
       <div class="row justify-content-center">
         <div class="col-lg-8 background-white">
-          <table class="table table-striped table-hover">
-            <h3>Deposit Accounts</h3>
-            <thead>
-              <th>Account</th>
-              <th>Type</th>
-              <th>Current Balance</th>
-            </thead>
-            {% for account in request.user.accounts.all %}
-              {% if account.account_type.name == "Checking" or account.account_type.name == "Savings" or account.account_type.name == "Retirement" %}
-                <tr>
-                  <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
-                  <td>{{account.account_type.name}}</td>
-                  <td>${{account.balance|floatformat:2}}</td>
-                </tr>
-              {% endif %}
-            {% endfor %}
-            <tr class="total">
-              <td><strong>Totals</strong></td>
-              <td></td>
-              <td><strong>${{basic_total|floatformat:2}}</strong></td>
-            </tr>
-          </table>
 
-          <table class="table table-striped table-hover">
-            <h3>Credit Cards</h3>
-            <thead>
-              <th>Account</th>
-              <th></th>
-              <th>Current Balance</th>
-            </thead>
-            {% for account in request.user.accounts.all %}
-              {% if account.account_type.name == "Credit" %}
-                <tr>
-                  <td>
-                    <a href="{% url 'app:accounts_detail' account_id=account.id %}">
-                      {{account.account_number}}
-                    </a>
-                  </td>
-                  <td></td>
-                  <td>
-                    {% if account.balance > 0 %}
+          <h3 class="pl-2">Deposit Accounts</h3>
+
+          <div class="row justify-content-center">
+            <table class="table table-striped table-hover">
+              <thead>
+                <th class="pl-4">Account</th>
+                <th>Type</th>
+                <th>Current Balance</th>
+              </thead>
+              {% for account in request.user.accounts.all %}
+                {% if account.account_type.name == "Checking" or account.account_type.name == "Savings" or account.account_type.name == "Retirement" %}
+                  <tr>
+                    <td class="pl-4"><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
+                    <td>{{account.account_type.name}}</td>
+                    <td>${{account.balance|floatformat:2}}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+              <tr class="total">
+                <td class="pl-4"><strong>Totals</strong></td>
+                <td></td>
+                <td><strong>${{basic_total|floatformat:2}}</strong></td>
+              </tr>
+            </table>
+          </div>
+          
+          <h3 class="pl-2">Credit Cards</h3>
+          <div class="row justify-content-center">
+            <table class="table table-striped table-hover">
+              <thead>
+                <th class="pl-4">Account</th>
+                <th></th>
+                <th>Current Balance</th>
+              </thead>
+              {% for account in request.user.accounts.all %}
+                {% if account.account_type.name == "Credit" %}
+                  <tr>
+                    <td class="pl-4">
+                      <a href="{% url 'app:accounts_detail' account_id=account.id %}">
+                        {{account.account_number}}
+                      </a>
+                    </td>
+                    <td></td>
+                    <td>
+                      {% if account.balance > 0 %}
+                      -
+                      {% endif %}
+                      ${{account.balance|abs|floatformat:2}}
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+              <tr class="total">
+                <td class="pl-4"><strong>Totals</strong></td>
+                <td></td>
+                <td>
+                  <strong>
+                    {% if credit_total > 0 %}
                     -
                     {% endif %}
-                    ${{account.balance|abs|floatformat:2}}
-                  </td>
-                </tr>
-              {% endif %}
-            {% endfor %}
-            <tr class="total">
-              <td><strong>Totals</strong></td>
-              <td></td>
-              <td>
-                <strong>
-                  {% if credit_total > 0 %}
-                  -
-                  {% endif %}
-                  ${{credit_total|abs|floatformat:2}}
-                </strong>
-              </td>
-            </tr>
-          </table>
-
-          {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success" role="alert">
-                            <p>{{message}}</p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-          <table class="table table-striped table-hover">
-            <h3>My Bills</h3>
-            <thead>
-              <th>Name</th>
-              <th>Account Number</th>
-              <th>Payment</th>
-              <th></th>
-            </thead>
-            {% for bill in request.user.bills.all %}
-              <tr>
-                <td>{{bill.name}}</td>
-                <td>{{bill.bill_account_number}}</td>
-                <td>{{bill.payment}}</td>
-                <td>
-                  <form action="{% url 'app:paybill' bill_id=bill.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Pay Bill</button>
-                  </form>
+                    ${{credit_total|abs|floatformat:2}}
+                  </strong>
                 </td>
               </tr>
+            </table>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    <p>{{message}}</p>
+                </div>
             {% endfor %}
-          </table>
+          {% endif %}
+          
+          <h3 class="pl-2">My Bills</h3>
+          <div class="row justify-content-center">
+            <table class="table table-striped table-hover">
+              <thead>
+                <th class="pl-4">Name</th>
+                <th>Account Number</th>
+                <th>Payment</th>
+                <th></th>
+              </thead>
+              {% for bill in request.user.bills.all %}
+                <tr>
+                  <td class="align-middle pl-4">{{bill.name}}</td>
+                  <td class="align-middle">{{bill.bill_account_number}}</td>
+                  <td class="align-middle">${{bill.payment|floatformat:2}}</td>
+                  <td>
+                    <form action="{% url 'app:paybill' bill_id=bill.id %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-secondary align-middle">Pay Bill</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
         </div>
 
         <div class="col-lg-3 background-white">
