@@ -57,7 +57,7 @@
                                 <option disabled selected hidden>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
                                 <option value="{{account.id}}">
-                                    {{account.account_type.name}} - ${{account.balance}}
+                                    {{account.account_type.name}} | Balance: ${{account.balance}}
                                 </option>
                                 {% endfor %}
                             </select>
