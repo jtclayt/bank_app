@@ -58,6 +58,11 @@
                 </tr>
               {% endif %}
             {% endfor %}
+            <tr class="total">
+              <td><strong>Totals</strong></td>
+              <td></td>
+              <td><strong>$10,000.50</strong></td>
+            </tr>
           </table>
 
           <!-- <table class="table">
@@ -90,7 +95,7 @@
               <th></th>
               <th>Current Balance</th>
             </thead>
-            {% for account in request.accounts.all %}
+            {% for account in accounts.all %}
               {% if account.account_type.name == "Credit" %}
                 <tr>
                   <td><a href="{% url 'app:accounts_detail' account_id=account.id %}">{{account.account_number}}</a></td>
