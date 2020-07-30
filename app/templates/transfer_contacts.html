@@ -50,7 +50,9 @@
                     {% for linked_account in request.user.linked_accounts.all %}
                         <li>
                             <a href="{% url 'app:external_transfer' account_id=linked_account.id %}">
-                                {{linked_account.owner.first_name}} {{linked_account.owner.last_name}}
+                                {{linked_account.owner.first_name}}
+                                {{linked_account.owner.last_name}}
+                                {{linked_account.account_type.name}}
                             </a>
                         </li>
                     {% endfor %}
