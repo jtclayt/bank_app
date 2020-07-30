@@ -84,8 +84,14 @@ class TransactionManager(models.Manager):
     # ATM Transaction
     def validate_atm(self, postData):
         errors = {}
-        if not postData['amount'] > 0:
-            errors['amount'] = "Amount must be greater than 0"
+        if  len(postData['amount']) <= 0:
+            errors['amount'] = "Amount must be greater than $0.00"
+        if postData['account'] == "-Choose an Account-":
+            errors['account'] = "Please select an account."
+        if len(postData['type']) <= 0:
+            errors['type'] = "You must select Withdrawal or Deposit."
+        if len(postData['description']) <= 0:
+            errors['description'] = "Enter a short description for this transaction."
         return errors
 
 
