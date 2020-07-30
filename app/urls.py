@@ -14,7 +14,7 @@ urlpatterns = [
     path('bill/', BillView.as_view(), name='bill'),
     path('external-transfer/', ContactsView.as_view(), name='contacts'),
     path(
-        'external-transfer/<int:contact_id>/',
+        'external-transfer/<int:account_id>/',
         ExternalTransferView.as_view(),
         name='external_transfer'
     ),

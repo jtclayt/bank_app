@@ -47,7 +47,7 @@ class AccountsView(LoginRequiredMixin, Main, View):
     def post(self, request):
         user = request.user
         created_account = Account.objects.create_account(
-            owner=user, 
+            owner=user,
             account_type=AccountType.objects.get(name=request.POST['account_name']),
             balance=0
         )
@@ -108,24 +108,68 @@ class ContactsView(LoginRequiredMixin, Main, View):
     template = 'transfer_contacts.html'
 
     def post(self, request):
-        print(request.POST)
+        errors = Account.objects.validate_contact(
+            request.POST,
+            request.user.id
+        )
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+        else:
+            account = get_object_or_404(
+                Account,
+                account_number=request.POST['account_number']
+            )
+            request.user.linked_accounts.add(account)
         return redirect(reverse('app:contacts'))
 
 
 class ExternalTransferView(LoginRequiredMixin, Main, View):
     template = 'ext_transfer.html'
 
-    def get(self, request, contact_id):
+    def get(self, request, account_id):
         context = {
             'user': request.user,
             'accounts': request.user.accounts.all(),
-            'contact': get_object_or_404(get_user_model(), id=contact_id)
+            'contact': get_object_or_404(Account, id=account_id)
         }
-        return render(request, self.get_template, context)
+        return render(request, self.get_template(), context)
 
-    def post(self, request, contact_id):
-        print(request.POST)
-        return redirect(reverse('app:external_transfer', args=(contact_id,)))
+    def post(self, request, account_id):
+        errors = Transaction.objects.validate_extransfer(request.POST)
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+            return redirect(
+                reverse('app:external_transfer', args=(account_id,))
+            )
+
+        to_acct = get_object_or_404(Account, id=account_id)
+        from_acct = get_object_or_404(Account, id=request.POST['account'])
+        trans_amount = float(request.POST['amount'])
+        Transaction.objects.create(
+            desc=request.POST['desc'],
+            amount=trans_amount,
+            new_balance=to_acct.balance - trans_amount,
+            is_deposit=False,
+            process_date=request.POST['date'],
+            account=from_acct,
+            transaction_type=TransactionType.objects.get(id=1),
+        )
+        Transaction.objects.create(
+            desc=request.POST['desc'],
+            amount=trans_amount,
+            new_balance=to_acct.balance + trans_amount,
+            is_deposit=True,
+            process_date=request.POST['date'],
+            account=to_acct,
+            transaction_type=TransactionType.objects.get(id=1),
+        )
+        from_acct.balance -= trans_amount
+        to_acct.balance += trans_amount
+        from_acct.save()
+        to_acct.save()
+        return redirect(reverse('app:accounts'))
 
 
 class ATMView(LoginRequiredMixin, Main, View):

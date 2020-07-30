@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import datetime
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 class AccountManager(models.Manager):
@@ -10,6 +11,23 @@ class AccountManager(models.Manager):
             errors['account_type'] = 'Select a valid account type'
         if postData['balance'] < 0:
             errors['balance'] = 'Balance must be greater than 0'
+        return errors
+
+    def validate_contact(self, postData, user_id):
+        errors = {}
+        account = Account.objects.filter(
+            account_number=postData['account_number']
+        )
+        if len(account) > 0:
+            account = account[0]
+            if account.owner.first_name != postData['first_name']:
+                errors['first_name'] = 'First name does not match'
+            if account.owner.last_name != postData['last_name']:
+                errors['last_name'] = 'Last name does not match'
+            if account.owner.id == user_id:
+                errors['owner'] = 'You cannot link your own account'
+        else:
+            errors['account_number'] = 'Account number does not exist'
         return errors
 
     def create_account(self, owner, account_type, balance=5):
@@ -36,7 +54,7 @@ class TransactionManager(models.Manager):
     def validate_purchase(self, postData):
         errors = {}
         todaysDate = datetime.now().date()
-        
+
         if len(postData['date']) == 0:
             errors['date'] = "Please enter a date"
         elif datetime.strptime(postData['date'], "%Y-%m-%d").date() > todaysDate:
@@ -49,7 +67,7 @@ class TransactionManager(models.Manager):
             errors['amount'] = "Please enter an amount!"
         elif not int(postData['amount']) > 0:
             errors['amount'] = "Amount must be greater than $0"
-            
+
         return errors
 
     # Make a transfer
@@ -76,14 +94,23 @@ class TransactionManager(models.Manager):
     # External Transfer
     def validate_extransfer(self, postData):
         errors = {}
-        if not postData['account_number'] > 0:
-            errors['account_number'] = "Account number must be greater than 0"
-        if not postData['amount'] > 0:
+        if not float(postData['amount']) > 0:
             errors['amount'] = "Amount must be greater than 0"
-        todaysDate = datetime.now().date()
-        if postData['date'] > todaysDate:
+        try:
+            account = Account.objects.filter(id=postData['account'])
+            if len(account) > 0:
+                account = account[0]
+                if float(postData['amount']) > account.balance:
+                    errors['balance'] = 'Insufficient funds for transfer'
+            else:
+                errors['account'] = 'Please transfer from a valid account'
+        except MultiValueDictKeyError:
+            errors['account'] = 'Please select an account to transfer from'
+        todays_date = datetime.now().date()
+        transfer_date = datetime.strptime(postData['date'], "%Y-%m-%d").date()
+        if transfer_date < todays_date:
             errors['date'] = "Date must be today or a future date"
-        if len(postData['note']) < 2:
+        if len(postData['desc']) < 2:
             errors['note'] = "Note must be greater that 2 characters"
         return errors
 
@@ -131,8 +158,8 @@ class Account(BaseModel):
         related_name='accounts',
         on_delete=models.CASCADE
     )
-    linked_accounts = models.ManyToManyField(
-        "self",
+    linked_users = models.ManyToManyField(
+        get_user_model(),
         related_name='linked_accounts'
     )
     objects = AccountManager()
