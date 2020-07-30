@@ -7,7 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
                         <a href="/create_account" class="nav-link">Create an Account</a>
                     </li>
                 </ul>
-                <span class="navbar-text">Welcome, <a href="/edit_profile">{{ request.user.first_name }}</a></span>
+                <span class="navbar-text">Welcome, <a href="{% url 'users:edit' %}">{{ request.user.first_name }}</a></span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
             </div>
         </nav>
@@ -45,20 +45,15 @@
                     <h3>Create New Account</h3>
                 </div>
                 <div class="col-sm-6">
-                    <form action="/create_account" method="POST">
+                    <form action="{% url 'app:accounts' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
                             <label for="account_name" class="col-sm-4">Account Type:</label>
-                            <select name="account_name" class="custom-select col-sm-8">
-                                <option selected>-Choose a Type-</option>
-                                {% for account_type in request.account_types.all %}
+                            <select name="account_name" id="account_name" class="custom-select col-sm-8">
+                                {% for account_type in account_types %}
                                     <option>{{account_type.name}}</option>
                                 {% endfor %}
                             </select>
-                        </div>
-                        <div class="form-group row">
-                            <label for="balance" class="col-sm-4">Start Balance:</label>
-                            <input type="number" class="form-control col-sm-8" value="0.00">
                         </div>
                         <button type="submit" class="btn btn-primary offset-4">Create</button>
                     </form>
@@ -76,7 +71,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer">
             <p>This project created by: Justin Clayton, Daniel Matthew, Dustin Crawford</p>
         </div>

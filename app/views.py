@@ -45,8 +45,17 @@ class AccountsView(LoginRequiredMixin, Main, View):
     template = 'dashboard.html'
 
     def post(self, request):
-        print(request.POST)
-        return redirect(reverse('app:accounts'))
+        user = request.user
+        created_account = Account.objects.create_account(
+            owner=user, 
+            account_type=AccountType.objects.get(name=request.POST['account_name']),
+            balance=0
+        )
+
+        account_type = created_account.account_type
+        messages.success(request, 'You have successfully created a new '+account_type.name+' account! You can now transfer funds!')
+        return redirect('/accounts/'+str(created_account.id))
+        # return redirect(reverse('app:accounts'))
 
 
 class PurchaseView(LoginRequiredMixin, Main, View):
@@ -134,8 +143,11 @@ class ATMView(LoginRequiredMixin, Main, View):
             this_account.save()
             return redirect(reverse('app:accounts'))
 
-def edit_profile(request):
-    return render(request, 'edit_profile.html')
 
 def create_account(request):
-    return render(request, 'create_account.html')
+    if request.method == 'GET':
+        context = {
+            'account_types': AccountType.objects.all()
+        }
+        return render(request, 'create_account.html', context)
+
