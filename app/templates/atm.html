@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>ATM | Monolith Bank</title>
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'users/img/favicon.ico' %}" type="image/x-icon">
+    
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -18,7 +21,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-bright">
-            <a href="" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
+            <a href="{% url 'app:accounts' %}" class="navbar-brand"><img src="{% static 'users/img/logo.png' %}" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navlinks" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,39 +41,43 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 background-white">
-                <div class="col-sm-6">
+                <div class="col-sm-10">
+                    <h4 class="pb-3">ATM Transaction</h4>
                     <form action="{% url 'app:atm' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account" class="col-sm-4">From:</label>
+                            <label for="account" class="col-sm-3">From:</label>
                             <select name="account" class="custom-select col-sm-8">
                                 {% for account in request.user.accounts.all %}
                                 <option value="{{account.id}}">
-                                    {{account.account_type.name}} | Balance: ${{account.balance}}
+                                    {{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance}}
                                 </option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label for="type" class="col-sm-4">Type:</label>
+                            <label for="type" class="col-sm-3">Type:</label>
                             <div class="form-check form-check-inline col-sm-3">
                                 <input class="form-check-inut" type="radio" name="type" id="option_1" value="Withdrawal" checked>
-                                <label for="option_1" class="form-check-label">Withdrawal</label>
+                                <label for="option_1" class="form-check-label pl-2">Withdrawal</label>
                             </div>
                             <div class="form-check form-check-inline col-sm-3">
                                 <input class="form-check-inut" type="radio" name="type" id="option_2" value="Deposit">
-                                <label for="option_2" class="form-check-label">Deposit</label>
+                                <label for="option_2" class="form-check-label pl-2">Deposit</label>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="description" class="col-sm-4">Description:</label>
+                            <label for="description" class="col-sm-3">Description:</label>
                             <input type="text" class="form-control col-sm-8" name="description">
                         </div>
                         <div class="form-group row">
-                            <label for="amount" class="col-4">Amount:</label>
-                            <input type="number" step="0.01" class="form-control col-sm-8" name="amount">
+                            <label for="amount" class="col-3">Amount:</label>
+                            <input type="number" step="0.01" class="form-control col-sm-5" name="amount" placeholder="0.00">
                         </div>
-                        <button type="submit" class="btn btn-primary offset-4">Submit</button>
+                        <div class="form-group row">
+                            <p class="col-sm-3"></p>
+                            <button type="submit" class="btn btn-primary form-control col-sm-3">Submit</button>
+                        </div>
                     </form>
                 </div>
                 <div class="col-sm-10">
