@@ -18,9 +18,12 @@ def index(request):
 
 @login_required()
 def account_detail(request, account_id):
+    account = get_object_or_404(Account, id=account_id)
     context = {
         'user': request.user,
-        # 'account': get_object_or_404(Account, id=account_id)
+        'account': account,
+        'interest_percent': account.account_type.interest_rate * 100,
+        'transactions': account.transactions.all().order_by('-created_at')
     }
     return render(request,  'account_details.html', context)
 
@@ -29,18 +32,22 @@ class Main(object):
     template = None
 
     def get(self, request):
+        basic_total = 0
         credit_total = 0
         loan_total = 0
         for account in request.user.accounts.all():
             if account.account_type.name == "Credit":
-                credit_total += account.balance 
+                credit_total += account.balance
             elif account.account_type.name == "Loan":
                 loan_total += account.balance
+            else:
+                basic_total += account.balance
         context = {
             'user': request.user,
             'accounts': request.user.accounts.all(),
+            'basic_total': basic_total,
             'credit_total': credit_total,
-            'loan_total': loan_total,
+            'loan_total': loan_total
         }
         return render(request, self.get_template(), context)
 
@@ -140,7 +147,8 @@ class ExternalTransferView(LoginRequiredMixin, Main, View):
         context = {
             'user': request.user,
             'accounts': request.user.accounts.all(),
-            'contact': get_object_or_404(Account, id=account_id)
+            'contact': get_object_or_404(Account, id=account_id),
+            'today': datetime.now().strftime('%Y-%m-%d')
         }
         return render(request, self.get_template(), context)
 
@@ -159,7 +167,7 @@ class ExternalTransferView(LoginRequiredMixin, Main, View):
         Transaction.objects.create(
             desc=request.POST['desc'],
             amount=trans_amount,
-            new_balance=to_acct.balance - trans_amount,
+            new_balance=from_acct.balance - trans_amount,
             is_deposit=False,
             process_date=request.POST['date'],
             account=from_acct,
