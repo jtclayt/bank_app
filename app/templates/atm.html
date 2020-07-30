@@ -47,9 +47,10 @@
                         <div class="form-group row">
                             <label for="account" class="col-sm-4">From:</label>
                             <select name="account" class="custom-select col-sm-8">
-                                <option>-Choose an Account-</option>
                                 {% for account in request.user.accounts.all %}
-                                    <option>{{account.account_type.name}}</option>
+                                <option value="{{account.id}}">
+                                    {{account.account_type.name}} | Balance: ${{account.balance}}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
