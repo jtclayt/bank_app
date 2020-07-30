@@ -62,8 +62,30 @@ class PurchaseView(LoginRequiredMixin, Main, View):
     template = 'purchase.html'
 
     def post(self, request):
-        print(request.POST)
-        return redirect(reverse('app:purchase'))
+        errors = Transaction.objects.validate_purchase(request.POST)
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+            return redirect(reverse('app:purchase'))
+
+        selected_account = Account.objects.get(id=request.POST['account_id'])
+        new_balance = selected_account.balance - int(request.POST['amount'])
+
+        selected_account.balance = new_balance
+        selected_account.save()
+
+        Transaction.objects.create(
+            desc = request.POST['desc'],
+            amount = request.POST['amount'],
+            new_balance = new_balance,
+            is_deposit = False,
+            process_date = request.POST['date'],
+            account = selected_account,
+            transaction_type = TransactionType.objects.get(name="Purchase")
+        )
+
+        messages.success(request, "You have successfully added a new purchase!")
+        return redirect('/accounts/'+str(selected_account.id))
 
 
 class TransferView(LoginRequiredMixin, Main, View):
@@ -143,7 +165,7 @@ class ATMView(LoginRequiredMixin, Main, View):
             this_account.save()
             return redirect(reverse('app:accounts'))
 
-
+@login_required()
 def create_account(request):
     if request.method == 'GET':
         context = {
