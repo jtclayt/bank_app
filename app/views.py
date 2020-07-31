@@ -322,5 +322,9 @@ def pay_bill(request, bill_id):
     messages.success(request, 'Bill Successfully Paid')
     return redirect(reverse('app:accounts'))
 
-
+@login_required()
+def delete_bill(request, bill_id):
+    bill = get_object_or_404(Bill, id=bill_id)
+    bill.delete()
+    return redirect(reverse('app:accounts'))
 

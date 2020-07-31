@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, account_detail, AccountsView, PurchaseView, ATMView, pay_bill
+from .views import index, account_detail, AccountsView, PurchaseView, ATMView, pay_bill, delete_bill
 from .views import TransferView, BillView, ContactsView, ExternalTransferView
 from . import views
 
@@ -20,5 +20,6 @@ urlpatterns = [
     ),
     path('atm/', ATMView.as_view(), name='atm'),
     path('create_account', views.create_account),
-    path('bill/<int:bill_id>/', pay_bill, name='paybill')
+    path('bill/<int:bill_id>/', pay_bill, name='paybill'),
+    path('bill/<int:bill_id>/delete', delete_bill, name='delete_bill'),
 ]
