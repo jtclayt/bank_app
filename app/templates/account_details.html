@@ -18,6 +18,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
     {% load mathfilters %}
+    {% load humanize %}
 </head>
 <body>
     <div class="container">
@@ -55,7 +56,7 @@
                         <p><strong>Account Type: </strong>{{account.account_type.name}}</p>
                         <p>
                             <strong>APY: </strong>
-                            {{interest_percent|floatformat:2}}%
+                            {{interest_percent|floatformat:2|intcomma}}%
                         </p>
                     </div>
                     <div class="col pt-2">
@@ -66,7 +67,7 @@
                             {% if account.account_type.name == 'Credit' and account.balance > 0 %}
                             -
                             {% endif %}
-                            ${{account.balance|abs|floatformat:2}}
+                            ${{account.balance|abs|floatformat:2|intcomma}}
                         </p>
                     </div>
                 </div>
@@ -88,17 +89,17 @@
                                     {% if transaction.is_deposit %}
                                     -
                                     {% endif %}
-                                    ${{transaction.amount|abs|floatformat:2}}
+                                    ${{transaction.amount|abs|floatformat:2|intcomma}}
                                 </td>
-                                <td>${{transaction.new_balance|abs|floatformat:2}}</td>
+                                <td>${{transaction.new_balance|abs|floatformat:2|intcomma}}</td>
                                 {% else %}
                                 <td>
                                     {% if not transaction.is_deposit %}
                                     -
                                     {% endif %}
-                                    ${{transaction.amount|floatformat:2}}
+                                    ${{transaction.amount|floatformat:2|intcomma}}
                                 </td>
-                                <td>${{transaction.new_balance|floatformat:2}}</td>
+                                <td>${{transaction.new_balance|floatformat:2|intcomma}}</td>
                                 {% endif %}
                             </tr>
                         {% endfor %}

@@ -17,6 +17,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
+    {% load mathfilters %}
+    {% load humanize %}
 </head>
 <body>
     <div class="container">
@@ -66,11 +68,11 @@
                             <label for="account_id" class="col-sm-3">From:</label>
                             <select name="account_id" id="account_id" class="custom-select col-sm-8">
                                 {% for account in request.user.accounts.all %}
-                                <option value="{{account.id}}">{{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance}}</option>
+                                <option value="{{account.id}}">{{account.account_type.name}} {{account.account_number}} | Balance: ${{account.balance|floatformat:2|intcomma}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="to_account_id" class="col-sm-3">To:</label>
                             <select name="to_account_id" id="to_account_id" class="custom-select col-sm-8">
