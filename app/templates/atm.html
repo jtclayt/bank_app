@@ -46,7 +46,7 @@
                     <form action="{% url 'app:atm' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="account" class="col-sm-3">From:</label>
+                            <label for="account" class="col-sm-3">Account:</label>
                             <select name="account" class="custom-select col-sm-8">
                                 {% for account in request.user.accounts.all %}
                                 <option value="{{account.id}}">
