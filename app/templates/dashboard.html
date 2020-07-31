@@ -127,6 +127,7 @@
                 <th>Account Number</th>
                 <th>Payment</th>
                 <th></th>
+                <th></th>
               </thead>
               {% for bill in request.user.bills.all %}
                 <tr>
@@ -139,6 +140,7 @@
                       <button type="submit" class="btn btn-secondary align-middle">Pay Bill</button>
                     </form>
                   </td>
+                  <td><a href="{% url 'app:delete_bill' bill_id=bill.id %}">Delete Bill</a></td>
                 </tr>
               {% endfor %}
             </table>
