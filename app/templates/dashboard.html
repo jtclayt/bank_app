@@ -140,7 +140,7 @@
                       <button type="submit" class="btn btn-secondary align-middle">Pay Bill</button>
                     </form>
                   </td>
-                  <td><a href="{% url 'app:delete_bill' bill_id=bill.id %}">Delete Bill</a></td>
+                  <td class="align-middle"><a href="{% url 'app:delete_bill' bill_id=bill.id %}" class="text-danger">Delete Bill</a></td>
                 </tr>
               {% endfor %}
             </table>

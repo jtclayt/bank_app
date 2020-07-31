@@ -24,36 +24,36 @@
       <form action="{% url 'users:register' %}" method="post">
         {% csrf_token %}
         <fieldset>
-          <input type="text" name="first_name" id="first_name" placeholder="First Name">
+          <input type="text" name="first_name" id="first_name" placeholder="First Name" required>
         </fieldset>
         <fieldset>
-          <input type="text" name="last_name" id="last_name" placeholder="Last Name">
+          <input type="text" name="last_name" id="last_name" placeholder="Last Name" required>
         </fieldset>
         <fieldset>
           <label for="dob">Date of Birth: </label>
-          <input type="date" name="dob" id="dob">
+          <input type="date" name="dob" id="dob" required>
         </fieldset>
         <fieldset>
-          <input type="text" name="email" id="email" placeholder="Email Address">
+          <input type="text" name="email" id="email" placeholder="Email Address" required>
         </fieldset>
         <fieldset>
-          <input type="password" name="password" id="password" placeholder="Password">
+          <input type="password" name="password" id="password" placeholder="Password" required>
         </fieldset>
         <fieldset>
-          <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
+          <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
         </fieldset>
         <fieldset>
-          <input type="submit" value="Register">
+          <input type="submit" value="Register" required>
         </fieldset>
       </form>
       
       {% if messages %}
-        <ul class="messages">    
-          {% for message in messages %}    
-              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
-          {% endfor %}
-        </ul>
-      {% endif %} 
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                <p>{{message}}</p>
+            </div>
+        {% endfor %}
+      {% endif %}
     </div>
     <a href="{% url 'users:login' %}">&larr; Back to Login</a>
 

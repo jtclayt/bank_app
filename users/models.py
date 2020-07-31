@@ -44,7 +44,7 @@ class UserManager(BaseUserManager):
     def validate_password(self, postData, errors={}):
         # Password validations
         if len(postData['password']) < 8:
-            errors['password'] = 'Password must be 8 opr more characters'
+            errors['password'] = 'Password must be 8 or more characters'
         elif(postData['password'] != postData['confirm_password']):
             errors['password'] = 'Passwords must match'
 

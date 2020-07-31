@@ -25,10 +25,10 @@
       <form action="{% url 'users:login' %}" method="post">
         {% csrf_token %}
         <fieldset>
-          <input type="text" name="email" id="email" placeholder="Email Address">
+          <input type="text" name="email" id="email" placeholder="Email Address" required>
         </fieldset>
         <fieldset>
-          <input type="password" name="password" id="password" placeholder="Password">
+          <input type="password" name="password" id="password" placeholder="Password" required>
         </fieldset>
         <fieldset id="button">
           <input type="submit" value="Login">
@@ -36,11 +36,11 @@
       </form>
       
       {% if messages %}
-        <ul class="messages">    
-          {% for message in messages %}    
-              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
-          {% endfor %}
-        </ul>
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                <p>{{message}}</p>
+            </div>
+        {% endfor %}
       {% endif %}
     </div>
     <a href="{% url 'users:register' %}">Not a member? Create an account</a>
